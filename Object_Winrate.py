@@ -7,6 +7,12 @@ import warnings
 
 warnings.filterwarnings(action='ignore')
 
+st.title("Correlation between objects and win rate")
+st.header("Test Header1")
+st.header("Test Header2")
+
+st.write("hi")
+
 League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
 
 print(pd.unique(League.datacompleteness))
