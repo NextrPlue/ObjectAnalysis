@@ -118,7 +118,7 @@ def main() :
         yh = League_Object['result']
         lr_herald_model = LinearRegression()
         lr_herald_model.fit(Xh, yh)
-        st.write(f"첫 용의 회귀 계수 : {lr_dragon_model.coef_[0]:.3f}, 결정 계수 : {lr_dragon_model.score(Xd, yd):.3f} | 첫 전령의 회귀 계수 : {lr_herald_model.coef_[0]:.3f}, 결정 계수 : {lr_herald_model.score(Xh, yh):.3f}")
+        st.write(f"첫 용의 회귀 계수 : {lr_dragon_model.coef_[0]:.3f}, 결정 계수 : {lr_dragon_model.score(Xd, yd):.3f}     | 첫 전령의 회귀 계수 : {lr_herald_model.coef_[0]:.3f}, 결정 계수 : {lr_herald_model.score(Xh, yh):.3f}")
 
 
         # 그래프 분석
