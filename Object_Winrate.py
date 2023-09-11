@@ -27,8 +27,17 @@ League_Object.drop(League_Object[(League_Object['count'] < 20)].index, inplace=T
 League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
-# 첫 오브젝트 산점도 그리는 함수
+# streamlit 레이아웃 조정
+st.set_page_config(layout="wide")
+empty1, con1, empty2 = st.columns([0.2, 1.0, 0.2])
+empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
+
+#streamlit 사이드바
+st.sidebar.title('데이터 선택하기')
 option = 'Liiv SANDBOX'
+option = st.sidebar.selectbox('분석할 팀을 선택하세요.', League_Object.index)
+
+# 첫 오브젝트 산점도 그리는 함수
 def lmPlot(obj):
     fig = sb.lmplot(x=obj, y="result", data=League_Object, line_kws={'color' : 'red'})
     highlight_x = League_Object.loc[option, obj]
@@ -37,18 +46,11 @@ def lmPlot(obj):
     plt.annotate(option, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
     st.pyplot(fig)
 
-# streamlit 레이아웃 조정
-st.set_page_config(layout="wide")
-empty1, con1 , empty2 = st.columns([0.2, 1.0, 0.2])
-empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
-
 def main() :
     with con1 :
         st.title("오브젝트와 승률의 상관관계 분석")
 
     with con2 :
-        option = st.selectbox('분석할 팀을 선택하세요.', League_Object.index)
-
         # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
         st.header(f"{option}팀의 첫 오브젝트와 승률")
         FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstdragon', 'firstherald'],
