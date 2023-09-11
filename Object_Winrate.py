@@ -15,11 +15,8 @@ st.header("Test Header2")
 st.write("hi")
 
 League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
-
 League = League[League['datacompleteness'] == 'complete']
-
 League = League[League['position'] == 'team']
-
 League = League[['teamname', 'result', 'firstdragon', 'firstherald', 'firstbaron', 'dragons', 'heralds', 'barons']]
 League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
 
@@ -38,10 +35,19 @@ League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 
 League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 League_Object['firstbaron_win'] = League.drop(League[(League['firstbaron'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
-# 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
 option = 'Liiv SANDBOX'
 option = st.selectbox('분석할 팀을 선택하세요.', League_Object.index)
 
+
+def lmPlot(obj):
+    fig = sb.lmplot(x=obj, y="result", data=League_Object, line_kws={'color' : 'red'})
+    highlight_x = League_Object.loc[option, obj]
+    highlight_y = League_Object.loc[option, 'result']
+    plt.scatter([highlight_x], [highlight_y], color='green')
+    plt.annotate(option, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
+    st.pyplot(fig)
+
+# 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
 FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstbaron', 'firstdragon', 'firstherald', 'firstbaron'],
                              'type':['average', 'average', 'average', option, option, option],
                              'win_rate':[np.average(League_Object['firstdragon_win']), np.average(League_Object['firstherald_win']), np.average(League_Object['firstbaron_win']), 
@@ -52,14 +58,9 @@ sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
 st.pyplot(fig)
 
 # 첫 용과 승률 산점도 그래프 그리기
-fig = sb.lmplot(x="firstdragon", y="result", data=League_Object, line_kws={'color' : 'red'})
-highlight_x = League_Object.loc[option, 'firstdragon']
-highlight_y = League_Object.loc[option, 'result']
-plt.scatter([highlight_x], [highlight_y], color='green')
-plt.annotate(option, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
-st.pyplot(fig)
-plt.show()
+lmPlot('firstdragon')
 
+# 첫 전령과 승률 산점도 그래프 그리기
 fig = sb.lmplot(x="firstherald", y="result", data=League_Object, line_kws={'color' : 'red'})
 
 fig = sb.lmplot(x="firstbaron", y="result", data=League_Object, line_kws={'color' : 'red'})
