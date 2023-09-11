@@ -69,7 +69,8 @@ selectYear(select_year)
 league_list = np.append(["모든 리그"], League['league'].unique())
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 dataProcessing(select_league)
-select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', League_Object.index)
+team_list = np.append(["모든 팀"], League_Object.index)
+select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list)
 
 # 첫 오브젝트 산점도 그리는 함수
 def lmPlot(obj):
