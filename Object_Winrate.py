@@ -52,6 +52,12 @@ fig = plt.figure(figsize=(10, 4))
 sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
 st.pyplot(fig)
 
+# 그래프 분석
+if np.average(League_Object['firstdragon_win']) < League_Object.loc[option]['firstdragon_win'] :
+    st.write(f"{option}팀은 첫 용을 먹었을 경우, 평균보다 높은 승률을 보여줍니다.")
+else :
+    st.write(f"{option}팀은 첫 용을 먹었을 경우, 평균보다 낮은 승률을 보여줍니다.")
+
 # 첫 용과 승률 산점도 그래프 그리기
 lmPlot('firstdragon')
 
