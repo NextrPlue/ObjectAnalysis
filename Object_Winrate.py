@@ -47,7 +47,8 @@ def main() :
         st.title("오브젝트와 승률의 상관관계 분석")
 
     with con2 :
-        option = st.selectbox('분석할 팀을 선택하세요.', League_Object.index)
+        st.header("분석할 팀을 선택하세요.")
+        option = st.selectbox('', League_Object.index)
 
         # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
         st.header(f"{option}팀의 첫 오브젝트와 승률")
