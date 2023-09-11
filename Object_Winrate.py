@@ -168,6 +168,6 @@ def main() :
             st.pyplot(fig)
             win_rate_list = [League_Object.loc[select_team]['infernal_win'], League_Object.loc[select_team]['mountain_win'], League_Object.loc[select_team]['cloud_win'], League_Object.loc[select_team]['ocean_win'], League_Object.loc[select_team]['chemtech_win'], League_Object.loc[select_team]['hextech_win']]
             buff = ['화염', '대지', '바람', '바다', '화학공학', '마법공학']
-            st.write(f"{buff(win_rate_list.index(max(win_rate_list)))}의 영혼을 얻었을 때의 승률이 가장 높은것으로 보여집니다.")
+            st.write(f"{buff[win_rate_list.index(max(win_rate_list))]}의 영혼을 얻었을 때의 승률이 가장 높은것으로 보여집니다.")
 
 main()
