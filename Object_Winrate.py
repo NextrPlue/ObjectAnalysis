@@ -69,7 +69,10 @@ st.sidebar.title('🎮데이터 선택하기')
 select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'])
 selectYear(select_year)
 checkbox_btn = st.sidebar.checkbox('선택한 리그 내에서 분석하기')
-league_list = np.append(["모든 리그"], League['league'].unique())
+if checkbox_btn :
+    league_list = League['league'].unique()
+else :
+    league_list = np.append(["모든 리그"], League['league'].unique())
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 dataProcessing(select_league, checkbox_btn)
 if select_league == "모든 리그" :
