@@ -34,7 +34,7 @@ def selectYear(year_select="2023") :
     else :
         League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
 
-def dataProcessing(league_select="모든 리그", checkbox_btn=True) :
+def dataProcessing(league_select="모든 리그", checkbox_btn=False) :
     global League, League_Object
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
