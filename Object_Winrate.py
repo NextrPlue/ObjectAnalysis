@@ -167,6 +167,7 @@ def main() :
             buff_eng = ['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech']
             buff_object = [buff_eng[i] for i in range (len(buff_eng)) if League_Object.loc[select_team][buff_eng[i]+'_count'] != 0]
             st.write(buff_object)
+            st.write(buff_eng[3]+'_count')
             
             Buff_Win = pd.DataFrame({'object':['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech', 'infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech'],
                                         'type':['average', 'average', 'average', 'average', 'average', 'average', select_team, select_team, select_team, select_team, select_team, select_team],
