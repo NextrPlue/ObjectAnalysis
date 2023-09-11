@@ -13,11 +13,7 @@ League_Object = pd.DataFrame()
 # 데이터 가공
 def selectYear(year_select="2023") :
     global League
-    if year_select == "2014" :
-        League = pd.read_csv('2014_LoL_esports_match_data_from_OraclesElixir.csv')
-    elif year_select == "2015" :
-        League = pd.read_csv('2015_LoL_esports_match_data_from_OraclesElixir.csv')
-    elif year_select == "2016" :
+    if year_select == "2016" :
         League = pd.read_csv('2016_LoL_esports_match_data_from_OraclesElixir.csv')
     elif year_select == "2017" :
         League = pd.read_csv('2017_LoL_esports_match_data_from_OraclesElixir.csv')
@@ -64,7 +60,7 @@ with con1 :
 
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
-select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'])
+select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'])
 selectYear(select_year)
 league_list = np.append(["모든 리그"], League['league'].unique())
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
