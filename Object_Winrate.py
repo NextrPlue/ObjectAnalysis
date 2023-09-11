@@ -39,6 +39,7 @@ League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 
 League_Object['firstbaron_win'] = League.drop(League[(League['firstbaron'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
 option = st.selectbox('분석할 팀을 선택하세요.', League_Object.index)
+option = 'T1'
 
 FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstbaron', 'firstdragon', 'firstherald', 'firstbaron'],
                              'type':['average', 'average', 'average', option, option, option],
@@ -48,6 +49,7 @@ FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstbaron
 fig = plt.figure(figsize=(10, 4))
 sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
 st.pyplot(fig)
+plt.show()
 
 fig = sb.lmplot(x="firstdragon", y="result", data=League_Object, line_kws={'color' : 'red'})
 
