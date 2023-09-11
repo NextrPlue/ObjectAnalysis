@@ -82,10 +82,10 @@ dataProcessing(select_year)
 league_list = np.append(["모든 리그"], League['league'].unique())
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 if select_league == "모든 리그" :
-    team_list = League
+    team_list = League_Object[(League_Object['count'] > 10)].index
 else : 
-    team_list = League[League['league'] == select_league]
-select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list['teamname'].unique())
+    team_list = League[League['league'] == select_league].drop(League_Object[(League_Object['count'] > 10)].index)
+select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list)
 
 def main() :
     if select_team is None :
