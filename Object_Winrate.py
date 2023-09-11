@@ -172,6 +172,7 @@ def main() :
                                         'win_rate':[League_Object.loc[select_team][(i+'_win')] for i in buff_object]})
             fig = plt.figure(figsize=(10, 4.7))
             sb.barplot(x='object', y='win_rate', data=Buff_Win, hue='type')
+            plt.axhline(y=League_Object.loc[select_team]['result'], xmin=0, xmax=1, color='red', linestyle='solid')
             st.pyplot(fig)
             win_rate_list = [League_Object.loc[select_team]['infernal_win'], League_Object.loc[select_team]['mountain_win'], League_Object.loc[select_team]['cloud_win'], League_Object.loc[select_team]['ocean_win'], League_Object.loc[select_team]['chemtech_win'], League_Object.loc[select_team]['hextech_win']]
             buff = ['화염', '대지', '바람', '바다', '화학공학', '마법공학']
