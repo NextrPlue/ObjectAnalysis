@@ -151,8 +151,13 @@ def main() :
             st.header(f"{select_year}년도의 드래곤 영혼 획득과 승률 분석")
             fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
             st.pyplot(fig)
-            
-
+            st.markdown('''드래곤 영혼과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다.  
+                        붉은색 회귀선이 가리키는 바와 같이, 드래곤 영혼을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.''')
+    
+    with con5 :
+        if int(select_year) < 2020 :
+            st.error("드래곤 영혼 출시 이전입니다.")
+        else :
             st.header(f"{select_team}팀의 첫 오브젝트와 승률 분석")
             FirstObj_Win = pd.DataFrame({'object':['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech', 'infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech'],
                                         'type':['average', 'average', 'average', 'average', 'average', 'average', select_team, select_team, select_team, select_team, select_team, select_team],
@@ -161,5 +166,8 @@ def main() :
             fig = plt.figure(figsize=(10, 4.7))
             sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
             st.pyplot(fig)
+            win_rate_list = [League_Object.loc[select_team]['infernal_win'], League_Object.loc[select_team]['mountain_win'], League_Object.loc[select_team]['cloud_win'], League_Object.loc[select_team]['ocean_win'], League_Object.loc[select_team]['chemtech_win'], League_Object.loc[select_team]['hextech_win']]
+            buff = ['화염', '대지', '바람', '바다', '화학공학', '마법공학']
+            st.write(f"{buff(win_rate_list.index(max(win_rate_list)))}의 영혼을 얻었을 때의 승률이 가장 높은것으로 보여집니다.")
 
 main()
