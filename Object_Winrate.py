@@ -54,6 +54,7 @@ def dataProcessing(league_select="모든 리그") :
 
     League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+selectYear()
 dataProcessing()
 
 # streamlit 레이아웃 조정
