@@ -40,7 +40,7 @@ def dataProcessing(league_select="모든 리그") :
     League = League[League['position'] == 'team']
     League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'dragons', 'heralds', 'barons']]
     League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
-    if league_select != "모든 리그" :
+    if checkbox_btn :
         League = League[League['league'] == league_select]
     League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('result')
     League_Object['count'] = League.groupby('teamname').agg({'result':'count'})
@@ -68,6 +68,7 @@ with con1 :
 st.sidebar.title('🎮데이터 선택하기')
 select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'])
 selectYear(select_year)
+checkbox_btn = st.checkbox('선택한 리그 내에서 분석하기')
 league_list = np.append(["모든 리그"], League['league'].unique())
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 dataProcessing(select_league)
