@@ -109,11 +109,11 @@ def main() :
         st.pyplot(fig)
 
         # 회귀 계수와 적합도 분석
-        X = League_Object['firstdragon']
+        X = League_Object[['firstdragon', 'firstherald']]
         y = League_Object['result']
         lr_model = LinearRegression()
         lr_model.fit(X, y)
-        st.markdown(f"첫 용의 회귀 계수 : {lr_model.coef_}")
+        st.write(f"첫 용의 회귀 계수 : {lr_model.coef_[0]} 첫 전령의 회귀 계수 : {lr_model.coef_[1]}")
 
         # 그래프 분석
         if select_year == "2016" :
