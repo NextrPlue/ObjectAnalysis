@@ -62,9 +62,9 @@ else :
     st.write(f"- {option}팀은 첫 용을 먹었을 경우, 평균보다 낮은 승률을 보여줍니다.")
 
 if League_Object.loc[option]['firstdragon_win'] > League_Object.loc[option]['firstherald_win'] :
-    st.write(f"- 첫 오브젝트로 용을 먹었을 경우의 승률이 전령을 먹었을 때보다 약 {(League_Object.loc[option]['firstdragon_win'] - League_Object.loc[option]['firstherald_win'])*100:.2f}% 높으므로 용을 먹는것이 더 유리합니다.")
+    st.write(f"- 첫 오브젝트로 용을 먹었을 경우의 승률이 전령을 먹었을 때보다 약 {League_Object.loc[option]['firstdragon_win'] / League_Object.loc[option]['firstherald_win']:.2f}% 높으므로 용을 먹는것이 더 유리합니다.")
 else :
-    st.write(f"- 첫 오브젝트로 전령을 먹었을 경우의 승률이 용을 먹었을 때보다 약 {(League_Object.loc[option]['firstherald_win'] - League_Object.loc[option]['firstdragon_win'])*100:.2f}% 높으므로 전령을 먹는것이 더 유리합니다.")
+    st.write(f"- 첫 오브젝트로 전령을 먹었을 경우의 승률이 용을 먹었을 때보다 약 {League_Object.loc[option]['firstherald_win'] / League_Object.loc[option]['firstdragon_win']:.2f}% 높으므로 전령을 먹는것이 더 유리합니다.")
 
 
 # 첫 용과 승률 산점도 그래프 그리기
