@@ -50,7 +50,6 @@ def dataProcessing(year_select="2023") :
     League_Object['heralds'] = League.groupby('teamname').agg({'heralds' : 'mean'})
     League_Object['barons'] = League.groupby('teamname').agg({'barons' : 'mean'})
     League_Object['dragon_buff'] = League.groupby('teamname').agg({'dragon_buff' : 'mean'})
-    League_Object.drop(League_Object[(League_Object['count'] < 20)].index, inplace=True)
 
     League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
