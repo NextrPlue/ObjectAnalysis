@@ -115,6 +115,6 @@ def main() :
     with con3 :
         g = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["firstdragon", "firstherald"], height=4)
         g.map(sb.regplot, line_kws={'color' : 'red'})
-        st.pyplot(fig)
+        st.pyplot(g)
 
 main()
