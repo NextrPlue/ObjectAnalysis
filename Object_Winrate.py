@@ -34,8 +34,14 @@ def dataProcessing(year_select="2023") :
 
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
-    League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'dragons', 'heralds', 'barons']]
+    League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'infernals', 'mountains', 'clouds', 'oceans', 'chemtechs', 'hextechs', 'dragons', 'heralds', 'barons']]
     League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
+    League['infernal_buff'] = ((League['infernals'] >= 2.0) & League['dragon_buff']) * 1
+    League['mountain_buff'] = ((League['mountains'] >= 2.0) & League['dragon_buff']) * 1
+    League['cloud_buff'] = ((League['clouds'] >= 2.0) & League['dragon_buff']) * 1
+    League['ocean_buff'] = ((League['oceans'] >= 2.0) & League['dragon_buff']) * 1
+    League['chemtech_buff'] = ((League['chemtechs'] >= 2.0) & League['dragon_buff']) * 1
+    League['hextech_buff'] = ((League['hextechs'] >= 2.0) & League['dragon_buff']) * 1
     League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('result')
     League_Object['count'] = League.groupby('teamname').agg({'result':'count'})
     League_Object['firstdragon'] = League.groupby('teamname').agg({'firstdragon':'mean'})
@@ -48,6 +54,12 @@ def dataProcessing(year_select="2023") :
 
     League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+    League_Object['infernal_win'] = League.drop(League[(League['infernal_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+    League_Object['mountain_win'] = League.drop(League[(League['mountain_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+    League_Object['cloud_win'] = League.drop(League[(League['cloud_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+    League_Object['ocean_win'] = League.drop(League[(League['ocean_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+    League_Object['chemtech_win'] = League.drop(League[(League['chemtech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+    League_Object['hextech_win'] = League.drop(League[(League['hextech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 dataProcessing()
 
 # streamlit 레이아웃 조정
@@ -135,9 +147,19 @@ def main() :
         # 선택한 년도의 드래곤 버프 획득과 승률 그래프 그리기
         if int(select_year) < 2020 :
             st.error("드래곤 영혼 출시 이전입니다.")
-        st.header(f"{select_year}년도의 드래곤 영혼 획득과 승률 분석")
-        fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
-        st.pyplot(fig)
+        else :
+            st.header(f"{select_year}년도의 드래곤 영혼 획득과 승률 분석")
+            fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
+            st.pyplot(fig)
+            
 
+            st.header(f"{select_team}팀의 첫 오브젝트와 승률 분석")
+            FirstObj_Win = pd.DataFrame({'object':['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech', 'infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech'],
+                                        'type':['average', 'average', 'average', 'average', 'average', 'average', select_team, select_team, select_team, select_team, select_team, select_team],
+                                        'win_rate':[League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], 
+                                                    League_Object.loc[select_team]['infernal_win'], League_Object.loc[select_team]['mountain_win'], League_Object.loc[select_team]['cloud_win'], League_Object.loc[select_team]['ocean_win'], League_Object.loc[select_team]['chemtech_win'], League_Object.loc[select_team]['hextech_win']]})
+            fig = plt.figure(figsize=(10, 4.7))
+            sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
+            st.pyplot(fig)
 
 main()
