@@ -166,7 +166,7 @@ def main() :
             st.header(f"{select_team}팀의 드래곤 영혼과 승률 분석")
             buff_eng = ['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech']
             buff_object = [buff_eng[i] for i in len(buff_eng) if League_Object.loc[select_team][buff_eng[i]+'_count']]
-            print(buff_object)
+            st.write(buff_object)
             
             Buff_Win = pd.DataFrame({'object':['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech', 'infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech'],
                                         'type':['average', 'average', 'average', 'average', 'average', 'average', select_team, select_team, select_team, select_team, select_team, select_team],
