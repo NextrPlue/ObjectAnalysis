@@ -133,7 +133,8 @@ def main() :
 
     with con4 :
         # 선택한 년도의 용 버프 획득과 승률 그래프 그리기
-        fig = sb.regplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
+        fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
         st.pyplot(fig)
+
 
 main()
