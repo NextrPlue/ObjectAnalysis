@@ -150,7 +150,7 @@ def main() :
             st.header(f"{select_year}년도의 드래곤 영혼 획득과 승률 분석")
             fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
             st.pyplot(fig)
-            st.markdown('''드래곤 영혼과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다.  
+            st.markdown('''- 드래곤 영혼과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다.  
                         붉은색 회귀선이 가리키는 바와 같이, 드래곤 영혼을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.''')
     
     with con5 :
@@ -171,6 +171,6 @@ def main() :
             for i in range (len(win_rate_list)) :
                 if win_rate_list[i] == max(win_rate_list) :
                     max_buff.append(buff[i])
-            st.write(f"{', '.join(max_buff)}의 영혼을 얻었을 때의 승률이 가장 높은것으로 보여집니다.")
+            st.write(f"- {', '.join(max_buff)}의 영혼을 얻었을 때의 승률이 가장 높은것으로 보여집니다.")
 
 main()
