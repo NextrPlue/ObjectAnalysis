@@ -113,18 +113,21 @@ def main() :
         yd = League_Object['result']
         lr_dragon_model = LinearRegression()
         lr_dragon_model.fit(Xd, yd)
+        st.write(f"첫 용의 회귀 계수 : {lr_dragon_model.coef_[0]:.3f}, 결정 계수 : {lr_dragon_model.score(Xd, yd):.3f}")
 
         Xh = League_Object[['firstherald']]
         yh = League_Object['result']
         lr_herald_model = LinearRegression()
         lr_herald_model.fit(Xh, yh)
-        st.write(f"첫 용의 회귀 계수 : {lr_dragon_model.coef_[0]:.3f}, 결정 계수 : {lr_dragon_model.score(Xd, yd):.3f}     | 첫 전령의 회귀 계수 : {lr_herald_model.coef_[0]:.3f}, 결정 계수 : {lr_herald_model.score(Xh, yh):.3f}")
+        st.write(f"첫 전령의 회귀 계수 : {lr_herald_model.coef_[0]:.3f}, 결정 계수 : {lr_herald_model.score(Xh, yh):.3f}")
 
 
         # 그래프 분석
-        if select_year == "2016" :
-            st.markdown('''- 첫 용과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다.  
-                        붉은색 회귀선이 가리키는 바와 같이, 첫 용을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.''')
-            st.markdown('''- 첫 전령과 승률 사이에도 양의 상관관계가 있는 것으로 보여집니다.  
-                        붉은색 회귀선이 가리키는 바와 같이, 첫 전령을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.''')
+        st.markdown('''- 첫 용과 승률, 첫 전령과 승률 사이의 관계를 보면 모두 양의 상관관계가 있는 것으로 보여집니다.  
+                    붉은색 회귀선이 가리키는 바와 같이, 첫 오브젝트를 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.''')
+        if lr_dragon_model.coef_[0] > lr_herald_model.coef_[0] :
+            st.write(f"- 첫 용의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 크다. 이를 통해 첫 용을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있다.")
+        else :
+            st.write(f"- 첫 용의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 작다. 이를 통해 첫 전령을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있다.")
+        
 main()
