@@ -11,8 +11,8 @@ League = pd.DataFrame()
 League_Object = pd.DataFrame()
 
 # 데이터 가공
-def dataProcessing(year_select="2023", league_select="모든 리그") :
-    global League, League_Object
+def selectYear(year_select="2023") :
+    global League
     if year_select == "2014" :
         League = pd.read_csv('2014_LoL_esports_match_data_from_OraclesElixir.csv')
     elif year_select == "2015" :
@@ -33,13 +33,15 @@ def dataProcessing(year_select="2023", league_select="모든 리그") :
         League = pd.read_csv('2022_LoL_esports_match_data_from_OraclesElixir.csv')
     else :
         League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
+
+def dataProcessing(league_select="모든 리그") :
+    global League, League_Object
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
     League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'dragons', 'heralds', 'barons']]
     League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
     if league_select != "모든 리그" :
         League = League[League['league'] == league_select]
-
     League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('result')
     League_Object['count'] = League.groupby('teamname').agg({'result':'count'})
     League_Object['firstdragon'] = League.groupby('teamname').agg({'firstdragon':'mean'})
@@ -62,6 +64,7 @@ empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
 select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'])
+selectYear(select_year)
 league_list = np.append(["모든 리그"], League['league'].unique())
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 dataProcessing(select_year, select_league)
