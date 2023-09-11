@@ -83,7 +83,8 @@ def main() :
                                     'type':['average', 'average', 'first_object', 'first_object'],
                                     'win_rate':[League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], 
                                                 League_Object.loc[select_team]['firstdragon_win'], League_Object.loc[select_team]['firstherald_win']]})
-        fig = sb.catplot(x='object', y='win_rate', data=FirstObj_Win, hue='type', height=4)
+        fig = plt.figure(figsize=(10, 4.5))
+        sb.catplotplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
         st.pyplot(fig)
 
         # 그래프 분석
