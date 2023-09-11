@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sb
 import warnings
 
+from sklearn.linear_model import LinearRegression
+
 warnings.filterwarnings(action='ignore')
 
 League = pd.DataFrame()
@@ -105,6 +107,13 @@ def main() :
         fig = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["firstdragon", "firstherald"], height=4)
         fig.map(sb.regplot, line_kws={'color' : 'red'})
         st.pyplot(fig)
+
+        # 회귀 계수와 적합도 분석
+        X = League_Object['firstdragon']
+        y = League_Object['result']
+        lr_model = LinearRegression()
+        lr_model.fit(X, y)
+        st.markdown(f"첫 용의 회귀 계수 : {lr_model.coef_}")
 
         # 그래프 분석
         if select_year == "2016" :
