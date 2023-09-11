@@ -51,13 +51,14 @@ fig = plt.figure(figsize=(10, 4))
 sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
 st.pyplot(fig)
 
+# 첫 용과 승률 산점도 그래프 그리기
 fig = plt.figure(figsize=(10, 4))
 sb.lmplot(x="firstdragon", y="result", data=League_Object, line_kws={'color' : 'red'})
 highlight_x = League_Object.loc[option, 'firstdragon']
 highlight_y = League_Object.loc[option, 'result']
 plt.scatter([highlight_x], [highlight_y], color='green')
 plt.annotate(option, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
-plt.show()
+st.pypplot(fig)
 
 fig = sb.lmplot(x="firstherald", y="result", data=League_Object, line_kws={'color' : 'red'})
 
