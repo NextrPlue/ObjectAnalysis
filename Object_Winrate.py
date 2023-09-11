@@ -12,6 +12,7 @@ League_Object = pd.DataFrame()
 
 # 데이터 가공
 def dataProcessing() :
+    global League, League_Object
     League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
@@ -30,6 +31,7 @@ def dataProcessing() :
 
     League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+dataProcessing()
 
 # streamlit 레이아웃 조정
 st.set_page_config(layout="wide")
@@ -38,15 +40,15 @@ empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
 
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
-option = st.sidebar.selectbox('분석할 팀을 선택하세요.', League_Object.index)
+select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', League_Object.index)
 
 # 첫 오브젝트 산점도 그리는 함수
 def lmPlot(obj):
     fig = sb.lmplot(x=obj, y="result", data=League_Object, line_kws={'color' : 'red'})
-    highlight_x = League_Object.loc[option, obj]
-    highlight_y = League_Object.loc[option, 'result']
+    highlight_x = League_Object.loc[select_team, obj]
+    highlight_y = League_Object.loc[select_team, 'result']
     plt.scatter([highlight_x], [highlight_y], color='green')
-    plt.annotate(option, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
+    plt.annotate(select_team, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
     st.pyplot(fig)
 
 def main() :
@@ -56,30 +58,31 @@ def main() :
 
     with con2 :
         # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
-        st.header(f"{option}팀의 첫 오브젝트와 승률")
+        st.header(f"{select_team}팀의 첫 오브젝트와 승률")
         FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstdragon', 'firstherald'],
                                     'type':['average', 'average', 'first_object', 'first_object'],
-                                    'win_rate':[League_Object.loc[option]['result'], League_Object.loc[option]['result'], 
-                                                League_Object.loc[option]['firstdragon_win'], League_Object.loc[option]['firstherald_win']]})
+                                    'win_rate':[League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], 
+                                                League_Object.loc[select_team]['firstdragon_win'], League_Object.loc[select_team]['firstherald_win']]})
         fig = plt.figure(figsize=(10, 4))
         sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
         st.pyplot(fig)
+        plt.show()
 
         # 그래프 분석
-        if League_Object.loc[option]['result'] < League_Object.loc[option]['firstdragon_win'] :
-            st.write(f"- {option}팀은 첫 용을 먹었을 경우, 평균보다 약 {(League_Object.loc[option]['firstdragon_win'] - League_Object.loc[option]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 용을 먹는것이 유리합니다.")    
+        if League_Object.loc[select_team]['result'] < League_Object.loc[select_team]['firstdragon_win'] :
+            st.write(f"- {select_team}팀은 첫 용을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['firstdragon_win'] - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 용을 먹는것이 유리합니다.")    
         else :
-            st.write(f"- {option}팀은 첫 용을 먹었을 경우, 평균보다 약 {(League_Object.loc[option]['result'] - League_Object.loc[option]['firstdragon_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 용을 먹는것은 불리합니다.")
+            st.write(f"- {select_team}팀은 첫 용을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object.loc[select_team]['firstdragon_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 용을 먹는것은 불리합니다.")
 
-        if League_Object.loc[option]['result'] < League_Object.loc[option]['firstherald_win'] :
-            st.write(f"- {option}팀은 첫 전령을 먹었을 경우, 평균보다 약 {(League_Object.loc[option]['firstherald_win'] - League_Object.loc[option]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 전령을 먹는것이 유리합니다.")    
+        if League_Object.loc[select_team]['result'] < League_Object.loc[select_team]['firstherald_win'] :
+            st.write(f"- {select_team}팀은 첫 전령을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['firstherald_win'] - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 전령을 먹는것이 유리합니다.")    
         else :
-            st.write(f"- {option}팀은 첫 전령을 먹었을 경우, 평균보다 약 {(League_Object.loc[option]['result'] - League_Object.loc[option]['firstherald_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 전령을 먹는것은 불리합니다.")
+            st.write(f"- {select_team}팀은 첫 전령을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object.loc[select_team]['firstherald_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 전령을 먹는것은 불리합니다.")
 
-        if League_Object.loc[option]['firstdragon_win'] > League_Object.loc[option]['firstherald_win'] :
-            st.write(f"- 첫 오브젝트로 용을 먹었을 경우의 승률이 전령을 먹었을 때보다 약 {(League_Object.loc[option]['firstdragon_win'] - League_Object.loc[option]['firstherald_win'])*100:.2f}% 높으므로 전령보단 용을 먹는것이 더 유리합니다.")
+        if League_Object.loc[select_team]['firstdragon_win'] > League_Object.loc[select_team]['firstherald_win'] :
+            st.write(f"- 첫 오브젝트로 용을 먹었을 경우의 승률이 전령을 먹었을 때보다 약 {(League_Object.loc[select_team]['firstdragon_win'] - League_Object.loc[select_team]['firstherald_win'])*100:.2f}% 높으므로 전령보단 용을 먹는것이 더 유리합니다.")
         else :
-            st.write(f"- 첫 오브젝트로 전령을 먹었을 경우의 승률이 용을 먹었을 때보다 약 {(League_Object.loc[option]['firstherald_win'] - League_Object.loc[option]['firstdragon_win'])*100:.2f}% 높으므로 용보단 전령을 먹는것이 더 유리합니다.")
+            st.write(f"- 첫 오브젝트로 전령을 먹었을 경우의 승률이 용을 먹었을 때보다 약 {(League_Object.loc[select_team]['firstherald_win'] - League_Object.loc[select_team]['firstdragon_win'])*100:.2f}% 높으므로 용보단 전령을 먹는것이 더 유리합니다.")
 
     with con3 :
         # 첫 용과 승률 산점도 그래프 그리기
@@ -102,27 +105,5 @@ def main() :
             ]
         })
         st.pyplot(fig)
-
-
-plt.title('Average Win Rate for First Objectives')
-plt.xlabel('Type of Objective')
-plt.ylabel('Average Win Rate')
-
-sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=8, aspect=1.2, line_kws={'color' : 'red'})
-plt.title('Linear Relationship between dragon_buff and result')
-
-sb.lmplot(x='dragons', y='result', data=League_Object, height=8, aspect=1.2, line_kws={'color' : 'red'})
-plt.title('Linear Relationship between dragon_kills and result')
-
-sb.lmplot(x='heralds', y='result', data=League_Object, height=8, aspect=1.2, line_kws={'color' : 'red'})
-plt.title('Linear Relationship between herald_kills and result')
-
-sb.lmplot(x='barons', y='result', data=League_Object, height=8, aspect=1.2, line_kws={'color' : 'red'})
-plt.title('Linear Relationship between baron_kills and result')
-
-df = pd.melt(League_Object, id_vars=['result'], value_vars=['dragons', 'heralds', 'barons'], 
-                   var_name='Variable', value_name='Value')
-sb.lmplot(x='Value', y='result', hue='Variable', data=df, height=8, aspect=1.2)
-plt.title('Linear Relationship between dragon_kills, herald_kills, baron_kills and result')
 
 main()
