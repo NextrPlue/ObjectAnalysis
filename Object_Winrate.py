@@ -61,9 +61,10 @@ st.pyplot(fig)
 lmPlot('firstdragon')
 
 # 첫 전령과 승률 산점도 그래프 그리기
-fig = sb.lmplot(x="firstherald", y="result", data=League_Object, line_kws={'color' : 'red'})
+lmPlot('firstherald')
 
-fig = sb.lmplot(x="firstbaron", y="result", data=League_Object, line_kws={'color' : 'red'})
+#첫 바론과 승률 산점도 그래프 그리기
+lmPlot('firstbaron')
 
 df_long = pd.melt(League_Object, id_vars=['result'], value_vars=['firstdragon', 'firstherald', 'firstbaron'], 
                   var_name='Variable', value_name='Value')
