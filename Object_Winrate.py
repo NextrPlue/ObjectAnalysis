@@ -11,13 +11,15 @@ League = pd.DataFrame()
 League_Object = pd.DataFrame()
 
 # 데이터 가공
-def dataProcessing() :
+def dataProcessing(league_select="NULL") :
     global League, League_Object
     League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
     League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'dragons', 'heralds', 'barons']]
     League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
+    if league_select != "NULL" :
+        League.drop(League['league'] != league_select, inplace=True)
 
     League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('result')
     League_Object['count'] = League.groupby('teamname').agg({'result':'count'})
@@ -40,7 +42,7 @@ empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
 
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
-select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', League['league'].unique())
+select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', [League['league'].unique(), 'NULL'])
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', League_Object.index)
 
 # 첫 오브젝트 산점도 그리는 함수
