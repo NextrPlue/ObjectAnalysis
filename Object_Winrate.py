@@ -173,7 +173,7 @@ def main() :
             ax = fig.add_subplot()
             sb.barplot(x='object', y='win_rate', data=Buff_Win, label=select_team)
             ax.axhline(League_Object.loc[select_team]['result'], color='red', linestyle='solid', label='mean')
-            ax.text(0, League_Object.loc[select_team]['result']+10, 'Mean of winning rate')
+            ax.text(0, League_Object.loc[select_team]['result']+0.1, 'Mean of winning rate')
             st.pyplot(fig)
             win_rate_list = [League_Object.loc[select_team]['infernal_win'], League_Object.loc[select_team]['mountain_win'], League_Object.loc[select_team]['cloud_win'], League_Object.loc[select_team]['ocean_win'], League_Object.loc[select_team]['chemtech_win'], League_Object.loc[select_team]['hextech_win']]
             buff = ['화염', '대지', '바람', '바다', '화학공학', '마법공학']
