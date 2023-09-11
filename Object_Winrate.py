@@ -42,7 +42,9 @@ empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
 
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
-select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', League['league'].unique() + ["NULL"])
+league_list = np.append(League['league'].unique(), ["NULL"])
+print(league_list)
+select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', League_Object.index)
 
 # 첫 오브젝트 산점도 그리는 함수
@@ -69,7 +71,6 @@ def main() :
         fig = plt.figure(figsize=(10, 4))
         sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
         st.pyplot(fig)
-        plt.show()
 
         # 그래프 분석
         if League_Object.loc[select_team]['result'] < League_Object.loc[select_team]['firstdragon_win'] :
