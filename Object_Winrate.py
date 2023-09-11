@@ -95,12 +95,13 @@ def main() :
     with con2 :
         # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
         st.header(f"{select_team}팀의 첫 오브젝트와 승률 분석")
-        FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstdragon', 'firstherald'],
-                                    'type':['average', 'average', 'first_object', 'first_object'],
-                                    'win_rate':[League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], 
-                                                League_Object.loc[select_team]['firstdragon_win'], League_Object.loc[select_team]['firstherald_win']]})
+        FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald'],
+                                    'win_rate':[League_Object.loc[select_team]['firstdragon_win'], League_Object.loc[select_team]['firstherald_win']]})
         fig = plt.figure(figsize=(10, 4.7))
-        sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
+        ax = fig.add_subplot()
+        sb.barplot(x='object', y='win_rate', data=FirstObj_Win, label=select_team)
+        ax.axhline(League_Object.loc[select_team]['result'], color='red', linestyle='solid', label='mean')
+        ax.legend()
         st.pyplot(fig)
 
         # 그래프 분석
