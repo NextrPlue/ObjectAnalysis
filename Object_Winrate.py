@@ -79,7 +79,7 @@ fig = sb.lmplot(x='Value', y='result', hue='Variable', data=df_long, height=8, a
 plt.title('Linear Relationship between firstdragon, firstherald and result')
 
 FirstObj_Win = pd.DataFrame({
-    'type': ['firstdragon', 'firstherald', 'firstbaron'],
+    'type': ['firstdragon', 'firstherald'],
     'win_rate': [
         np.average(League_Object['firstdragon_win']),
         np.average(League_Object['firstherald_win'])
