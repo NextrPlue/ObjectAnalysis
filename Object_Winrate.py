@@ -9,11 +9,6 @@ warnings.filterwarnings(action='ignore')
 
 st.title("오브젝트와 승률의 상관관계 분석")
 
-st.header("Test Header1")
-st.header("Test Header2")
-
-st.write("hi")
-
 League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
 League = League[League['datacompleteness'] == 'complete']
 League = League[League['position'] == 'team']
@@ -48,6 +43,7 @@ def lmPlot(obj):
     st.pyplot(fig)
 
 # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
+st.header(f"{option}팀의 첫 오브젝트와 승률")
 FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstbaron', 'firstdragon', 'firstherald', 'firstbaron'],
                              'type':['average', 'average', 'average', option, option, option],
                              'win_rate':[np.average(League_Object['firstdragon_win']), np.average(League_Object['firstherald_win']), np.average(League_Object['firstbaron_win']), 
