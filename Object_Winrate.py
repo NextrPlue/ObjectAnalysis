@@ -48,7 +48,7 @@ def lmPlot(obj):
 
 def main() :
     with con1 :
-        st.title("오브젝트와 승률의 상관관계 분석")
+        st.title("\t오브젝트와 승률의 상관관계 분석\n")
 
     with con2 :
         # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
