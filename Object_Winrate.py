@@ -46,7 +46,7 @@ def lmPlot(obj):
 st.header(f"{option}팀의 첫 오브젝트와 승률")
 FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstbaron', 'firstdragon', 'firstherald', 'firstbaron'],
                              'type':['average', 'average', 'average', option, option, option],
-                             'win_rate':[np.average(League_Object['firstdragon_win']), np.average(League_Object['firstherald_win']), np.average(League_Object['firstbaron_win']), 
+                             'win_rate':[League_Object.loc[option]['result'], League_Object.loc[option]['result'], League_Object.loc[option]['result'], 
                                          League_Object.loc[option]['firstdragon_win'], League_Object.loc[option]['firstherald_win'], League_Object.loc[option]['firstbaron_win']]})
 fig = plt.figure(figsize=(10, 4))
 sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
