@@ -47,7 +47,8 @@ FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstbaron
                              'win_rate':[np.average(League_Object['firstdragon_win']), np.average(League_Object['firstherald_win']), np.average(League_Object['firstbaron_win']), 
                                          League_Object.loc[option]['firstdragon_win'], League_Object.loc[option]['firstherald_win'], League_Object.loc[option]['firstbaron_win']]})
 
-fig = sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
+fig = plt.figure(figsize=(10, 4))
+sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
 st.pyplot(fig)
 
 fig = sb.lmplot(x="firstdragon", y="result", data=League_Object, line_kws={'color' : 'red'})
