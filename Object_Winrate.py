@@ -34,7 +34,6 @@ empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
 
 #streamlit 사이드바
 st.sidebar.title('데이터 선택하기')
-option = 'Liiv SANDBOX'
 option = st.sidebar.selectbox('분석할 팀을 선택하세요.', League_Object.index)
 
 # 첫 오브젝트 산점도 그리는 함수
@@ -49,7 +48,6 @@ def lmPlot(obj):
 def main() :
     with con1 :
         st.title("오브젝트와 승률의 상관관계 분석")
-        st.write('')
 
     with con2 :
         # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
