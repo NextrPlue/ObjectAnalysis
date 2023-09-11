@@ -11,8 +11,8 @@ League = pd.DataFrame()
 League_Object = pd.DataFrame()
 
 # 데이터 가공
-def selectYear(year_select="2023") :
-    global League
+def dataProcessing(year_select="2023") :
+    global League, League_Object
     if year_select == "2016" :
         League = pd.read_csv('2016_LoL_esports_match_data_from_OraclesElixir.csv')
     elif year_select == "2017" :
@@ -30,8 +30,6 @@ def selectYear(year_select="2023") :
     else :
         League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
 
-def dataProcessing(league_select="모든 리그") :
-    global League, League_Object
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
     League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'dragons', 'heralds', 'barons']]
@@ -48,7 +46,6 @@ def dataProcessing(league_select="모든 리그") :
 
     League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
-selectYear()
 dataProcessing()
 
 # streamlit 레이아웃 조정
@@ -61,10 +58,9 @@ with con1 :
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
 select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'])
-selectYear(select_year)
+dataProcessing(select_year)
 league_list = np.append(["모든 리그"], League['league'].unique())
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
-dataProcessing(select_league)
 if select_league == "모든 리그" :
     team_list = League
 else : 
@@ -111,5 +107,7 @@ def main() :
         st.pyplot(fig)
 
         # 그래프 분석
-        
+        if select_year == "2016" :
+            st.write(f"- 첫 용과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다. 붉은색 회귀선이 가리키는 바와 같이, 첫 용을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.")
+            st.write(f"- 첫 전령과 승률 사이에도 양의 상관관계가 있는 것으로 보여집니다. 붉은색 회귀선이 가리키는 바와 같이, 첫 전령을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.")
 main()
