@@ -188,7 +188,7 @@ def main() :
             else :
                 st.write(f"- 드래곤의 영혼을 얻었을 경우의 승률이 평균보다 낮습니다. 따라서 드래곤의 영혼을 얻는 것은 불리합니다.")
 
-if League_Object['count'] < 20 :
+if League_Object.loc[select_team]['count'] < 20 :
     st.error("매치 수가 20회 미만입니다.")
 else :
     main()
