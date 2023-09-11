@@ -38,7 +38,8 @@ League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 
 League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 League_Object['firstbaron_win'] = League.drop(League[(League['firstbaron'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
-option = 'T1'
+# 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
+option = 'Liiv SANDBOX'
 option = st.selectbox('분석할 팀을 선택하세요.', League_Object.index)
 
 FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstbaron', 'firstdragon', 'firstherald', 'firstbaron'],
@@ -46,10 +47,8 @@ FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstbaron
                              'win_rate':[np.average(League_Object['firstdragon_win']), np.average(League_Object['firstherald_win']), np.average(League_Object['firstbaron_win']), 
                                          League_Object.loc[option]['firstdragon_win'], League_Object.loc[option]['firstherald_win'], League_Object.loc[option]['firstbaron_win']]})
 
-fig = plt.figure(figsize=(10, 4))
-sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
+fig = sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
 st.pyplot(fig)
-plt.show()
 
 fig = sb.lmplot(x="firstdragon", y="result", data=League_Object, line_kws={'color' : 'red'})
 
