@@ -113,7 +113,6 @@ def main() :
         y = League_Object['result']
         lr_dragon_model = LinearRegression()
         lr_dragon_model.fit(X, y)
-        st.write(f"")
 
         X = League_Object[['firstherald']]
         y = League_Object['result']
