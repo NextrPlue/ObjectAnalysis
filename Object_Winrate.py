@@ -40,6 +40,7 @@ empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
 
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
+select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', League['league'].unique())
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', League_Object.index)
 
 # 첫 오브젝트 산점도 그리는 함수
