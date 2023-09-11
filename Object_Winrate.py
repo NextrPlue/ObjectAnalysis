@@ -88,9 +88,9 @@ def main() :
 
         # 그래프 분석
         if League_Object.loc[select_team]['result'] < League_Object.loc[select_team]['firstdragon_win'] :
-            st.write(f"- {select_team}팀은 첫 용을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['firstdragon_win'] - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 용을 먹는것이 유리합니다.")    
+            st.write(f"- {select_team}팀은 첫 드래곤을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['firstdragon_win'] - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 드래곤을 먹는것이 유리합니다.")    
         else :
-            st.write(f"- {select_team}팀은 첫 용을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object.loc[select_team]['firstdragon_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 용을 먹는것은 불리합니다.")
+            st.write(f"- {select_team}팀은 첫 드래곤을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object.loc[select_team]['firstdragon_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 드래곤을 먹는것은 불리합니다.")
 
         if League_Object.loc[select_team]['result'] < League_Object.loc[select_team]['firstherald_win'] :
             st.write(f"- {select_team}팀은 첫 전령을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['firstherald_win'] - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 전령을 먹는것이 유리합니다.")    
@@ -98,9 +98,9 @@ def main() :
             st.write(f"- {select_team}팀은 첫 전령을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object.loc[select_team]['firstherald_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 전령을 먹는것은 불리합니다.")
 
         if League_Object.loc[select_team]['firstdragon_win'] > League_Object.loc[select_team]['firstherald_win'] :
-            st.write(f"- 첫 오브젝트로 용을 먹었을 경우의 승률이 전령을 먹었을 때보다 약 {(League_Object.loc[select_team]['firstdragon_win'] - League_Object.loc[select_team]['firstherald_win'])*100:.2f}% 높으므로 전령보단 용을 먹는것이 더 유리합니다.")
+            st.write(f"- 첫 오브젝트로 드래곤을 먹었을 경우의 승률이 전령을 먹었을 때보다 약 {(League_Object.loc[select_team]['firstdragon_win'] - League_Object.loc[select_team]['firstherald_win'])*100:.2f}% 높으므로 전령보단 드래곤을 먹는것이 더 유리합니다.")
         else :
-            st.write(f"- 첫 오브젝트로 전령을 먹었을 경우의 승률이 용을 먹었을 때보다 약 {(League_Object.loc[select_team]['firstherald_win'] - League_Object.loc[select_team]['firstdragon_win'])*100:.2f}% 높으므로 용보단 전령을 먹는것이 더 유리합니다.")
+            st.write(f"- 첫 오브젝트로 전령을 먹었을 경우의 승률이 드래곤을 먹었을 때보다 약 {(League_Object.loc[select_team]['firstherald_win'] - League_Object.loc[select_team]['firstdragon_win'])*100:.2f}% 높으므로 드래곤보단 전령을 먹는것이 더 유리합니다.")
 
     with con3 :
         # 선택한 년도의 첫 오브젝트와 승률 산점도, 회귀선, 신뢰 구간 그래프 그리기
@@ -114,7 +114,7 @@ def main() :
         yd = League_Object['result']
         lr_dragon_model = LinearRegression()
         lr_dragon_model.fit(Xd, yd)
-        st.write(f"첫 용의 회귀 계수 : {lr_dragon_model.coef_[0]:.3f}, 결정 계수 : {lr_dragon_model.score(Xd, yd):.3f}")
+        st.write(f"첫 드래곤의 회귀 계수 : {lr_dragon_model.coef_[0]:.3f}, 결정 계수 : {lr_dragon_model.score(Xd, yd):.3f}")
 
         Xh = League_Object[['firstherald']]
         yh = League_Object['result']
@@ -124,15 +124,18 @@ def main() :
 
 
         # 그래프 분석
-        st.markdown('''- 첫 용과 승률, 첫 전령과 승률 사이의 관계를 보면 모두 양의 상관관계가 있는 것으로 보여집니다.  
+        st.markdown('''- 첫 드래곤과 승률, 첫 전령과 승률 사이의 관계를 보면 모두 양의 상관관계가 있는 것으로 보여집니다.  
                     붉은색 회귀선이 가리키는 바와 같이, 첫 오브젝트를 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.''')
         if lr_dragon_model.coef_[0] > lr_herald_model.coef_[0] :
-            st.write(f"- 첫 용의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 크다. 이를 통해 첫 용을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있다.")
+            st.write(f"- 첫 드래곤의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 크다. 이를 통해 첫 드래곤을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있다.")
         else :
-            st.write(f"- 첫 용의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 작다. 이를 통해 첫 전령을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있다.")
+            st.write(f"- 첫 드래곤의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 작다. 이를 통해 첫 전령을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있다.")
 
     with con4 :
-        # 선택한 년도의 용 버프 획득과 승률 그래프 그리기
+        # 선택한 년도의 드래곤 버프 획득과 승률 그래프 그리기
+        if int(select_year) < 2020 :
+            st.error("드래곤 영혼 출시 이전입니다.")
+        st.header(f"{select_year}년도의 드래곤 영혼 획득과 승률 분석")
         fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
         st.pyplot(fig)
 
