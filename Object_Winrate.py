@@ -86,7 +86,7 @@ if select_league == "모든 리그" :
 else : 
     team_list = League[League['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list['teamname'].unique())
-min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 1, 100, 20, 1)
+min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 0, 50, 20, 5)
 
 def main() :
     if select_team is None :
