@@ -19,7 +19,7 @@ def dataProcessing(league_select="모든 리그") :
     League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'dragons', 'heralds', 'barons']]
     League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
     if league_select != "모든 리그" :
-        League.drop(League['league'] != league_select, inplace=True)
+        League = League[League['league'] == league_select]
 
     League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('result')
     League_Object['count'] = League.groupby('teamname').agg({'result':'count'})
