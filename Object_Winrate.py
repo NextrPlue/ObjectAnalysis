@@ -78,6 +78,7 @@ def lmPlot(obj):
     highlight_y = League_Object.loc[select_team, 'result']
     plt.scatter([highlight_x], [highlight_y], color='green')
     plt.annotate(select_team, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
+    st.pyplot(fig)
 
 def main() :
     if select_team is None :
@@ -112,28 +113,8 @@ def main() :
             st.write(f"- 첫 오브젝트로 전령을 먹었을 경우의 승률이 용을 먹었을 때보다 약 {(League_Object.loc[select_team]['firstherald_win'] - League_Object.loc[select_team]['firstdragon_win'])*100:.2f}% 높으므로 용보단 전령을 먹는것이 더 유리합니다.")
 
     with con3 :
-        # 첫 용과 승률 산점도 그래프 그리기
-        plt.subplot(1,3,1)
-        lmPlot('firstdragon')
-
-        # 첫 전령과 승률 산점도 그래프 그리기
-        plt.subplot(1,3,2)
-        lmPlot('firstherald')
-
-        #첫 오브젝트와 승률 산점도 그래프 그리기
-        plt.subplot(1,3,3)
-        df_long = pd.melt(League_Object, id_vars=['result'], value_vars=['firstdragon', 'firstherald'], 
-                        var_name='Variable', value_name='Value')
-        fig = sb.lmplot(x='Value', y='result', hue='Variable', data=df_long, height=8, aspect=1.2)
-        plt.title('Linear Relationship between firstdragon, firstherald and result')
-
-        FirstObj_Win = pd.DataFrame({
-            'type': ['firstdragon', 'firstherald'],
-            'win_rate': [
-                np.average(League_Object['firstdragon_win']),
-                np.average(League_Object['firstherald_win'])
-            ]
-        })
+        g = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["firstdragon", "firstherald"], height=4)
+        g.map(sb.regplot, line_kws={'color' : 'red'})
         st.pyplot(fig)
 
 main()
