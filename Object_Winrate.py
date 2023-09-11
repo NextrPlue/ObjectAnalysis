@@ -84,8 +84,7 @@ def lmPlot(obj):
 
 def main() :
     if select_team is None :
-        with con1 :
-            st.header("‼️분석할 팀이 없습니다‼️")
+        st.error("‼️분석할 팀이 없습니다‼️")
         return
 
     with con2 :
