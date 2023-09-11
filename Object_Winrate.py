@@ -65,6 +65,7 @@ def dataProcessing(year_select="2023") :
     League_Object['ocean_win'] = League.drop(League[(League['ocean_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['chemtech_win'] = League.drop(League[(League['chemtech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['hextech_win'] = League.drop(League[(League['hextech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+    League_Object.drop(League_Object[(League_Object['count'] < 20)].index, inplace=True)
 dataProcessing()
 
 # streamlit 레이아웃 조정
