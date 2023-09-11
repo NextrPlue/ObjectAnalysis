@@ -86,7 +86,32 @@ def main() :
 
     with con2 :
         # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
-        st.write(select_team)
+        if select_team is not None :
+            st.header(f"{select_team}팀의 첫 오브젝트와 승률")
+            FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstdragon', 'firstherald'],
+                                        'type':['average', 'average', 'first_object', 'first_object'],
+                                        'win_rate':[League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], 
+                                                    League_Object.loc[select_team]['firstdragon_win'], League_Object.loc[select_team]['firstherald_win']]})
+            fig = plt.figure(figsize=(10, 4))
+            sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
+            st.pyplot(fig)
+
+            # 그래프 분석
+            if League_Object.loc[select_team]['result'] < League_Object.loc[select_team]['firstdragon_win'] :
+                st.write(f"- {select_team}팀은 첫 용을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['firstdragon_win'] - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 용을 먹는것이 유리합니다.")    
+            else :
+                st.write(f"- {select_team}팀은 첫 용을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object.loc[select_team]['firstdragon_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 용을 먹는것은 불리합니다.")
+
+            if League_Object.loc[select_team]['result'] < League_Object.loc[select_team]['firstherald_win'] :
+                st.write(f"- {select_team}팀은 첫 전령을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['firstherald_win'] - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 전령을 먹는것이 유리합니다.")    
+            else :
+                st.write(f"- {select_team}팀은 첫 전령을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object.loc[select_team]['firstherald_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 전령을 먹는것은 불리합니다.")
+
+            if League_Object.loc[select_team]['firstdragon_win'] > League_Object.loc[select_team]['firstherald_win'] :
+                st.write(f"- 첫 오브젝트로 용을 먹었을 경우의 승률이 전령을 먹었을 때보다 약 {(League_Object.loc[select_team]['firstdragon_win'] - League_Object.loc[select_team]['firstherald_win'])*100:.2f}% 높으므로 전령보단 용을 먹는것이 더 유리합니다.")
+            else :
+                st.write(f"- 첫 오브젝트로 전령을 먹었을 경우의 승률이 용을 먹었을 때보다 약 {(League_Object.loc[select_team]['firstherald_win'] - League_Object.loc[select_team]['firstdragon_win'])*100:.2f}% 높으므로 용보단 전령을 먹는것이 더 유리합니다.")
+
     with con3 :
         # 첫 용과 승률 산점도 그래프 그리기
         lmPlot('firstdragon')
