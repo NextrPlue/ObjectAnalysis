@@ -57,7 +57,6 @@ def lmPlot(obj):
     st.pyplot(fig)
 
 def main() :
-    dataProcessing()
     with con1 :
         st.title("📈오브젝트와 승률의 상관관계 분석")
 
