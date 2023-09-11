@@ -78,7 +78,6 @@ def lmPlot(obj):
     highlight_y = League_Object.loc[select_team, 'result']
     plt.scatter([highlight_x], [highlight_y], color='green')
     plt.annotate(select_team, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
-    st.pyplot(fig)
 
 def main() :
     if select_team is None :
@@ -114,12 +113,15 @@ def main() :
 
     with con3 :
         # 첫 용과 승률 산점도 그래프 그리기
+        plt.subplot(1,3,1)
         lmPlot('firstdragon')
 
         # 첫 전령과 승률 산점도 그래프 그리기
+        plt.subplot(1,3,2)
         lmPlot('firstherald')
 
         #첫 오브젝트와 승률 산점도 그래프 그리기
+        plt.subplot(1,3,3)
         df_long = pd.melt(League_Object, id_vars=['result'], value_vars=['firstdragon', 'firstherald'], 
                         var_name='Variable', value_name='Value')
         fig = sb.lmplot(x='Value', y='result', hue='Variable', data=df_long, height=8, aspect=1.2)
