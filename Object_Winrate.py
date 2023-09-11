@@ -170,7 +170,7 @@ def main() :
             Buff_Win = pd.DataFrame({'object':buff_object,
                                         'win_rate':[League_Object.loc[select_team][(i+'_win')] for i in buff_object]})
             fig = plt.figure(figsize=(10, 4.7))
-            sb.barplot(x='object', y='win_rate', data=Buff_Win, hue='type', label=select_team)
+            sb.barplot(x='object', y='win_rate', data=Buff_Win, label=select_team)
             plt.axhline(y=League_Object.loc[select_team]['result'], xmin=0, xmax=1, color='red', linestyle='solid', label='mean')
             st.pyplot(fig)
             win_rate_list = [League_Object.loc[select_team]['infernal_win'], League_Object.loc[select_team]['mountain_win'], League_Object.loc[select_team]['cloud_win'], League_Object.loc[select_team]['ocean_win'], League_Object.loc[select_team]['chemtech_win'], League_Object.loc[select_team]['hextech_win']]
