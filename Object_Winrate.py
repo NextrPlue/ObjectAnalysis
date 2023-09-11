@@ -71,15 +71,6 @@ else :
     team_list = League[League['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list['teamname'].unique())
 
-# 첫 오브젝트 산점도 그리는 함수
-def lmPlot(obj):
-    fig = sb.lmplot(x=obj, y="result", data=League_Object, line_kws={'color' : 'red'})
-    highlight_x = League_Object.loc[select_team, obj]
-    highlight_y = League_Object.loc[select_team, 'result']
-    plt.scatter([highlight_x], [highlight_y], color='green')
-    plt.annotate(select_team, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
-    st.pyplot(fig)
-
 def main() :
     if select_team is None :
         st.error("‼️분석할 팀이 없습니다‼️")
@@ -87,7 +78,7 @@ def main() :
 
     with con2 :
         # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
-        st.header(f"{select_team}팀의 첫 오브젝트와 승률")
+        st.header(f"{select_team}팀의 첫 오브젝트와 승률 분석")
         FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstdragon', 'firstherald'],
                                     'type':['average', 'average', 'first_object', 'first_object'],
                                     'win_rate':[League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], 
@@ -113,8 +104,12 @@ def main() :
             st.write(f"- 첫 오브젝트로 전령을 먹었을 경우의 승률이 용을 먹었을 때보다 약 {(League_Object.loc[select_team]['firstherald_win'] - League_Object.loc[select_team]['firstdragon_win'])*100:.2f}% 높으므로 용보단 전령을 먹는것이 더 유리합니다.")
 
     with con3 :
-        g = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["firstdragon", "firstherald"], height=4)
-        g.map(sb.regplot, line_kws={'color' : 'red'})
-        st.pyplot(g)
+        # 선택한 년도의 첫 오브젝트와 승률 산점도, 회귀선, 신뢰 구간 그래프 그리기
+        st.header(f"{select_year}년도의 첫 오브젝트와 승률 분석")
+        fig = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["firstdragon", "firstherald"], height=4)
+        fig.map(sb.regplot, line_kws={'color' : 'red'})
+        st.pyplot(fig)
+
+        # 그래프 분석
 
 main()
