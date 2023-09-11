@@ -7,10 +7,9 @@ import warnings
 
 warnings.filterwarnings(action='ignore')
 
-st.title("오브젝트와 승률의 상관관계 분석")
-
 st.set_page_config(layout="wide")
 col1, col2 = st.columns(2)
+st.title("오브젝트와 승률의 상관관계 분석")
 
 League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
 League = League[League['datacompleteness'] == 'complete']
