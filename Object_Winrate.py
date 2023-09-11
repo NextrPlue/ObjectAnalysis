@@ -84,7 +84,7 @@ def main() :
                                     'win_rate':[League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], 
                                                 League_Object.loc[select_team]['firstdragon_win'], League_Object.loc[select_team]['firstherald_win']]})
         fig = plt.figure(figsize=(10, 4.5))
-        sb.catplotplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
+        sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
         st.pyplot(fig)
 
         # 그래프 분석
