@@ -11,9 +11,28 @@ League = pd.DataFrame()
 League_Object = pd.DataFrame()
 
 # 데이터 가공
-def dataProcessing(league_select="모든 리그") :
+def dataProcessing(year_select="2023", league_select="모든 리그") :
     global League, League_Object
-    League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
+    if year_select == "2014" :
+        League = pd.read_csv('2014_LoL_esports_match_data_from_OraclesElixir.csv')
+    elif year_select == "2015" :
+        League = pd.read_csv('2015_LoL_esports_match_data_from_OraclesElixir.csv')
+    elif year_select == "2016" :
+        League = pd.read_csv('2016_LoL_esports_match_data_from_OraclesElixir.csv')
+    elif year_select == "2017" :
+        League = pd.read_csv('2017_LoL_esports_match_data_from_OraclesElixir.csv')
+    elif year_select == "2018" :
+        League = pd.read_csv('2018_LoL_esports_match_data_from_OraclesElixir.csv')
+    elif year_select == "2019" :
+        League = pd.read_csv('2019_LoL_esports_match_data_from_OraclesElixir.csv')
+    elif year_select == "2020" :
+        League = pd.read_csv('2020_LoL_esports_match_data_from_OraclesElixir.csv')
+    elif year_select == "2021" :
+        League = pd.read_csv('2021_LoL_esports_match_data_from_OraclesElixir.csv')
+    elif year_select == "2022" :
+        League = pd.read_csv('2022_LoL_esports_match_data_from_OraclesElixir.csv')
+    else :
+        League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
     League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'dragons', 'heralds', 'barons']]
