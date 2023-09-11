@@ -83,8 +83,8 @@ def main() :
                                     'type':['average', 'average', 'first_object', 'first_object'],
                                     'win_rate':[League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], 
                                                 League_Object.loc[select_team]['firstdragon_win'], League_Object.loc[select_team]['firstherald_win']]})
-        fig = plt.figure(figsize=(10, 4))
-        sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type', height=4)
+        fig = plt.figure(figsize=(10, 6))
+        sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
         st.pyplot(fig)
 
         # 그래프 분석
@@ -106,7 +106,8 @@ def main() :
     with con3 :
         # 선택한 년도의 첫 오브젝트와 승률 산점도, 회귀선, 신뢰 구간 그래프 그리기
         st.header(f"{select_year}년도의 첫 오브젝트와 승률 분석")
-        fig = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["firstdragon", "firstherald"], height=4)
+        fig = plt.figure(figsize=(10, 6))
+        fig = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["firstdragon", "firstherald"])
         fig.map(sb.regplot, line_kws={'color' : 'red'})
         st.pyplot(fig)
 
