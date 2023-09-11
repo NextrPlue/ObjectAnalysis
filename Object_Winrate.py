@@ -58,7 +58,7 @@ highlight_x = League_Object.loc[option, 'firstdragon']
 highlight_y = League_Object.loc[option, 'result']
 plt.scatter([highlight_x], [highlight_y], color='green')
 plt.annotate(option, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
-st.pypplot(fig)
+st.pyplot(fig)
 
 fig = sb.lmplot(x="firstherald", y="result", data=League_Object, line_kws={'color' : 'red'})
 
