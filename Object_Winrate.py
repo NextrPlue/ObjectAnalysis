@@ -53,13 +53,13 @@ sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
 st.pyplot(fig)
 
 # 그래프 분석
-if np.average(League_Object['firstdragon_win']) < League_Object.loc[option]['firstdragon_win'] :
+if League_Object.loc[option]['result'] < League_Object.loc[option]['firstdragon_win'] :
     if np.average(League_Object['firstherald_win']) < League_Object.loc[option]['firstherald_win'] :
         st.write(f"- {option}팀은 첫 용을 먹었을 경우, 평균보다 높은 승률을 보여줍니다. 또한 첫 전령을 먹었을 경우, 평균보다 높은 승률을 보여줍니다.")
     else :
         st.write(f"- {option}팀은 첫 용을 먹었을 경우, 평균보다 높은 승률을 보여줍니다. 그러나 첫 전령을 먹었을 경우에, 평균보다 낮은 승률을 보여줍니다.")
 else :
-    if np.average(League_Object['firstherald_win']) < League_Object.loc[option]['firstherald_win'] :
+    if League_Object.loc[option]['result'] < League_Object.loc[option]['firstherald_win'] :
         st.write(f"- {option}팀은 첫 용을 먹었을 경우, 평균보다 낮은 승률을 보여줍니다. 그러나 첫 전령을 먹었을 경우, 평균보다 높은 승률을 보여줍니다.")
     else :
         st.write(f"- {option}팀은 첫 용을 먹었을 경우, 평균보다 낮은 승률을 보여줍니다. 또한 첫 전령을 먹었을 경우에, 평균보다 낮은 승률을 보여줍니다.")
