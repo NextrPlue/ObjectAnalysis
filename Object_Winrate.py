@@ -61,6 +61,8 @@ dataProcessing()
 st.set_page_config(layout="wide")
 empty1, con1, empty2 = st.columns([0.2, 1.0, 0.2])
 empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
+with con1 :
+    st.title("📈오브젝트와 승률의 상관관계 분석")
 
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
@@ -82,10 +84,8 @@ def lmPlot(obj):
 
 def main() :
     if select_team is None :
+        st.header("‼️분석할 팀이 없습니다‼️")
         return
-
-    with con1 :
-        st.title("📈오브젝트와 승률의 상관관계 분석")
 
     with con2 :
         # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
