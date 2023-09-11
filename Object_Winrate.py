@@ -86,6 +86,7 @@ if select_league == "모든 리그" :
 else : 
     team_list = League[League['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list['teamname'].unique())
+min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 1, 100, 20, 1)
 
 def main() :
     if select_team is None :
@@ -188,8 +189,8 @@ def main() :
             else :
                 st.write(f"- 드래곤의 영혼을 얻었을 경우의 승률이 평균보다 낮습니다. 따라서 드래곤의 영혼을 얻는 것은 불리합니다.")
 
-if League_Object.loc[select_team]['count'] < 20 :
-    st.error("매치 수가 20회 미만입니다.")
+if League_Object.loc[select_team]['count'] < min_match :
+    st.error(f"매치 수가 {min_match}회 미만입니다.")
 else :
-    League_Object.drop(League_Object[(League_Object['count'] < 20)].index, inplace=True)
+    League_Object.drop(League_Object[(League_Object['count'] < min_match)].index, inplace=True)
     main()
