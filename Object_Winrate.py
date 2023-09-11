@@ -54,6 +54,7 @@ dataProcessing()
 st.set_page_config(layout="wide")
 empty1, con1, empty2 = st.columns([0.2, 1.0, 0.2])
 empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
+empty5, con4, con5, empty6 = st.columns([0.2, 0.5, 0.5, 0.2])
 with con1 :
     st.title("📈오브젝트와 승률의 상관관계 분석")
 
@@ -83,6 +84,7 @@ def main() :
                                                 League_Object.loc[select_team]['firstdragon_win'], League_Object.loc[select_team]['firstherald_win']]})
         fig = plt.figure(figsize=(10, 4.7))
         sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
+        plt.title(f"{select_team}의 첫 오브젝트와 승률")
         st.pyplot(fig)
 
         # 그래프 분석
@@ -106,6 +108,7 @@ def main() :
         st.header(f"{select_year}년도의 첫 오브젝트와 승률 분석")
         fig = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["firstdragon", "firstherald"], height=4)
         fig.map(sb.regplot, line_kws={'color' : 'red'})
+        plt.title(f"{select_year}년도의 첫 오브젝트와 승률 선형 관계")
         st.pyplot(fig)
 
         # 회귀 계수와 적합도 분석
@@ -129,5 +132,12 @@ def main() :
             st.write(f"- 첫 용의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 크다. 이를 통해 첫 용을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있다.")
         else :
             st.write(f"- 첫 용의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 작다. 이를 통해 첫 전령을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있다.")
-        
+
+    with con4 :
+        # 선택한 년도의 용 버프 획득과 승률 그래프 그리기
+        fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
+        plt.title(f"{select_year}년도의 용 버프 획득과 승률 선형 관계")
+        st.pyplot(fig)
+
+
 main()
