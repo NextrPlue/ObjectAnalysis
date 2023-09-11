@@ -12,14 +12,13 @@ st.title("오브젝트와 승률의 상관관계 분석")
 League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
 League = League[League['datacompleteness'] == 'complete']
 League = League[League['position'] == 'team']
-League = League[['teamname', 'result', 'firstdragon', 'firstherald', 'firstbaron', 'dragons', 'heralds', 'barons']]
+League = League[['teamname', 'result', 'firstdragon', 'firstherald', 'dragons', 'heralds', 'barons']]
 League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
 
 League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('result')
 League_Object['count'] = League.groupby('teamname').agg({'result':'count'})
 League_Object['firstdragon'] = League.groupby('teamname').agg({'firstdragon':'mean'})
 League_Object['firstherald'] = League.groupby('teamname').agg({'firstherald':'mean'})
-League_Object['firstbaron'] = League.groupby('teamname').agg({'firstbaron':'mean'})
 League_Object['dragons'] = League.groupby('teamname').agg({'dragons' : 'mean'})
 League_Object['heralds'] = League.groupby('teamname').agg({'heralds' : 'mean'})
 League_Object['barons'] = League.groupby('teamname').agg({'barons' : 'mean'})
@@ -28,7 +27,6 @@ League_Object.drop(League_Object[(League_Object['count'] < 20)].index, inplace=T
 
 League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
-League_Object['firstbaron_win'] = League.drop(League[(League['firstbaron'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
 option = 'Liiv SANDBOX'
 option = st.selectbox('분석할 팀을 선택하세요.', League_Object.index)
@@ -68,32 +66,23 @@ if League_Object.loc[option]['firstdragon_win'] > League_Object.loc[option]['fir
 else :
     st.write(f"- 첫 오브젝트로 전령을 먹었을 경우의 승률이 용을 먹었을 때보다 약 {(League_Object.loc[option]['firstherald_win'] - League_Object.loc[option]['firstdragon_win'])*100:.2f}% 높으므로 용보단 전령을 먹는것이 더 유리합니다.")
 
-if League_Object.loc[option]['result'] < League_Object.loc[option]['firstbaron_win'] :
-    st.write(f"- {option}팀은 첫 바론을 먹었을 경우, 평균보다 약 {(League_Object.loc[option]['firstbaron_win'] - League_Object.loc[option]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 바론을 먹는것이 유리합니다.")    
-else :
-    st.write(f"- {option}팀은 첫 바론을 먹었을 경우, 평균보다 약 {(League_Object.loc[option]['result'] - League_Object.loc[option]['firstbaron_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 바론을 먹는것은 불리합니다.")
-
 # 첫 용과 승률 산점도 그래프 그리기
 lmPlot('firstdragon')
 
 # 첫 전령과 승률 산점도 그래프 그리기
 lmPlot('firstherald')
 
-#첫 바론과 승률 산점도 그래프 그리기
-lmPlot('firstbaron')
-
 #첫 오브젝트와 승률 산점도 그래프 그리기
-df_long = pd.melt(League_Object, id_vars=['result'], value_vars=['firstdragon', 'firstherald', 'firstbaron'], 
+df_long = pd.melt(League_Object, id_vars=['result'], value_vars=['firstdragon', 'firstherald'], 
                   var_name='Variable', value_name='Value')
 fig = sb.lmplot(x='Value', y='result', hue='Variable', data=df_long, height=8, aspect=1.2)
-plt.title('Linear Relationship between firstdragon, firstherald, firstbaron and result')
+plt.title('Linear Relationship between firstdragon, firstherald and result')
 
 FirstObj_Win = pd.DataFrame({
     'type': ['firstdragon', 'firstherald', 'firstbaron'],
     'win_rate': [
         np.average(League_Object['firstdragon_win']),
-        np.average(League_Object['firstherald_win']),
-        np.average(League_Object['firstbaron_win'])
+        np.average(League_Object['firstherald_win'])
     ]
 })
 st.pyplot(fig)
