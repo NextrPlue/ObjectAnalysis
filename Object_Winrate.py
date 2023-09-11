@@ -38,8 +38,8 @@ League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 
 League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 League_Object['firstbaron_win'] = League.drop(League[(League['firstbaron'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
-option = st.selectbox('분석할 팀을 선택하세요.', League_Object.index)
 option = 'T1'
+option = st.selectbox('분석할 팀을 선택하세요.', League_Object.index)
 
 FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstbaron', 'firstdragon', 'firstherald', 'firstbaron'],
                              'type':['average', 'average', 'average', option, option, option],
