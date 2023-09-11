@@ -34,7 +34,7 @@ def selectYear(year_select="2023") :
     else :
         League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
 
-def dataProcessing(league_select="모든 리그", checkbox_btn=True) :
+def dataProcessing(league_select, checkbox_btn=True) :
     global League, League_Object
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
@@ -69,8 +69,7 @@ st.sidebar.title('🎮데이터 선택하기')
 select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'])
 selectYear(select_year)
 checkbox_btn = st.sidebar.checkbox('선택한 리그 내에서 분석하기')
-league_list = np.append(["모든 리그"], League['league'].unique())
-select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
+select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', League['league'].unique())
 dataProcessing(select_league, checkbox_btn)
 team_list = League[League['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list['teamname'].unique())
