@@ -72,7 +72,10 @@ checkbox_btn = st.sidebar.checkbox('선택한 리그 내에서 분석하기')
 league_list = np.append(["모든 리그"], League['league'].unique())
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 dataProcessing(select_league, checkbox_btn)
-team_list = League[League['league'] == select_league]
+if league_list == "모든 리그" :
+    team_list = League
+else : 
+    team_list = League[League['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list['teamname'].unique())
 
 # 첫 오브젝트 산점도 그리는 함수
