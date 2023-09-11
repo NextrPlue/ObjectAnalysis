@@ -171,6 +171,6 @@ def main() :
             for i in range (len(win_rate_list)) :
                 if win_rate_list[i] == max(win_rate_list) :
                     max_buff.append(i + 1)
-            st.write(f"{[buff[i] for i in max_buff]}의 영혼을 얻었을 때의 승률이 가장 높은것으로 보여집니다.")
+            st.write(f"{(buff[i] for i in max_buff)}의 영혼을 얻었을 때의 승률이 가장 높은것으로 보여집니다.")
 
 main()
