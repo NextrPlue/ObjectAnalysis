@@ -7,25 +7,29 @@ import warnings
 
 warnings.filterwarnings(action='ignore')
 
+League = pd.DataFrame()
+League_Object = pd.DataFrame()
+
 # 데이터 가공
-League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
-League = League[League['datacompleteness'] == 'complete']
-League = League[League['position'] == 'team']
-League = League[['teamname', 'result', 'firstdragon', 'firstherald', 'dragons', 'heralds', 'barons']]
-League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
+def dataProcessing() :
+    League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
+    League = League[League['datacompleteness'] == 'complete']
+    League = League[League['position'] == 'team']
+    League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'dragons', 'heralds', 'barons']]
+    League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
 
-League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('result')
-League_Object['count'] = League.groupby('teamname').agg({'result':'count'})
-League_Object['firstdragon'] = League.groupby('teamname').agg({'firstdragon':'mean'})
-League_Object['firstherald'] = League.groupby('teamname').agg({'firstherald':'mean'})
-League_Object['dragons'] = League.groupby('teamname').agg({'dragons' : 'mean'})
-League_Object['heralds'] = League.groupby('teamname').agg({'heralds' : 'mean'})
-League_Object['barons'] = League.groupby('teamname').agg({'barons' : 'mean'})
-League_Object['dragon_buff'] = League.groupby('teamname').agg({'dragon_buff' : 'mean'})
-League_Object.drop(League_Object[(League_Object['count'] < 20)].index, inplace=True)
+    League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('result')
+    League_Object['count'] = League.groupby('teamname').agg({'result':'count'})
+    League_Object['firstdragon'] = League.groupby('teamname').agg({'firstdragon':'mean'})
+    League_Object['firstherald'] = League.groupby('teamname').agg({'firstherald':'mean'})
+    League_Object['dragons'] = League.groupby('teamname').agg({'dragons' : 'mean'})
+    League_Object['heralds'] = League.groupby('teamname').agg({'heralds' : 'mean'})
+    League_Object['barons'] = League.groupby('teamname').agg({'barons' : 'mean'})
+    League_Object['dragon_buff'] = League.groupby('teamname').agg({'dragon_buff' : 'mean'})
+    League_Object.drop(League_Object[(League_Object['count'] < 20)].index, inplace=True)
 
-League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
-League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+    League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+    League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
 # streamlit 레이아웃 조정
 st.set_page_config(layout="wide")
@@ -33,7 +37,7 @@ empty1, con1, empty2 = st.columns([0.2, 1.0, 0.2])
 empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
 
 #streamlit 사이드바
-st.sidebar.title('데이터 선택하기')
+st.sidebar.title('🎮데이터 선택하기')
 option = st.sidebar.selectbox('분석할 팀을 선택하세요.', League_Object.index)
 
 # 첫 오브젝트 산점도 그리는 함수
@@ -46,6 +50,7 @@ def lmPlot(obj):
     st.pyplot(fig)
 
 def main() :
+    dataProcessing()
     with con1 :
         st.title("📈오브젝트와 승률의 상관관계 분석")
 
