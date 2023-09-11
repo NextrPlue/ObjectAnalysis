@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sb
+import openai
 import warnings
 
 warnings.filterwarnings(action='ignore')
@@ -48,7 +49,6 @@ FirstObj_Win = pd.DataFrame({'object':['firstdragon', 'firstherald', 'firstbaron
                              'type':['average', 'average', 'average', option, option, option],
                              'win_rate':[np.average(League_Object['firstdragon_win']), np.average(League_Object['firstherald_win']), np.average(League_Object['firstbaron_win']), 
                                          League_Object.loc[option]['firstdragon_win'], League_Object.loc[option]['firstherald_win'], League_Object.loc[option]['firstbaron_win']]})
-
 fig = plt.figure(figsize=(10, 4))
 sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
 st.pyplot(fig)
@@ -62,9 +62,10 @@ lmPlot('firstherald')
 #첫 바론과 승률 산점도 그래프 그리기
 lmPlot('firstbaron')
 
+#첫 오브젝트와 승률 산점도 그래프 그리기
 df_long = pd.melt(League_Object, id_vars=['result'], value_vars=['firstdragon', 'firstherald', 'firstbaron'], 
                   var_name='Variable', value_name='Value')
-sb.lmplot(x='Value', y='result', hue='Variable', data=df_long, height=8, aspect=1.2)
+fig = sb.lmplot(x='Value', y='result', hue='Variable', data=df_long, height=8, aspect=1.2)
 plt.title('Linear Relationship between firstdragon, firstherald, firstbaron and result')
 
 FirstObj_Win = pd.DataFrame({
@@ -75,6 +76,8 @@ FirstObj_Win = pd.DataFrame({
         np.average(League_Object['firstbaron_win'])
     ]
 })
+st.pyplot(fig)
+
 
 plt.title('Average Win Rate for First Objectives')
 plt.xlabel('Type of Objective')
