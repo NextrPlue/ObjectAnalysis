@@ -82,10 +82,10 @@ dataProcessing(select_year)
 league_list = np.append(["모든 리그"], League['league'].unique())
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 if select_league == "모든 리그" :
-    team_list = League_Object[(League_Object['count'] > 10)].index
+    team_list = League
 else : 
-    team_list = League[League['league'] == select_league].drop(League_Object[(League_Object['count'] > 10)].index)
-select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list)
+    team_list = League[League['league'] == select_league]
+select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list['teamname'].unique())
 
 def main() :
     if select_team is None :
@@ -187,4 +187,8 @@ def main() :
                 st.write(f"- {', '.join(max_buff)}의 영혼을 얻었을 경우, 평균보다 약 {(max(win_rate_list) - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 {', '.join(max_buff)}의 영혼을 얻는 것이 유리합니다.")
             else :
                 st.write(f"- 드래곤의 영혼을 얻었을 경우의 승률이 평균보다 낮습니다. 따라서 드래곤의 영혼을 얻는 것은 불리합니다.")
-main()
+
+if League_Object['count'] < 20 :
+    st.error("매치 수가 20회 미만입니다.")
+else :
+    main()
