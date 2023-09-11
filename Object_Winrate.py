@@ -74,10 +74,11 @@ select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', League_O
 # 첫 오브젝트 산점도 그리는 함수
 def lmPlot(obj):
     fig = sb.lmplot(x=obj, y="result", data=League_Object, line_kws={'color' : 'red'})
-    highlight_x = League_Object.loc[select_team, obj]
-    highlight_y = League_Object.loc[select_team, 'result']
-    plt.scatter([highlight_x], [highlight_y], color='green')
-    plt.annotate(select_team, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
+    if select_team is not None :
+        highlight_x = League_Object.loc[select_team, obj]
+        highlight_y = League_Object.loc[select_team, 'result']
+        plt.scatter([highlight_x], [highlight_y], color='green')
+        plt.annotate(select_team, (highlight_x, highlight_y), textcoords="offset points", xytext=(0,10), ha='center')
     st.pyplot(fig)
 
 def main() :
