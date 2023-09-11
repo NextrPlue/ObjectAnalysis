@@ -7,7 +7,8 @@ import warnings
 
 warnings.filterwarnings(action='ignore')
 
-st.title("Correlation between objects and win rate")
+st.title("오브젝트와 승률의 상관관계 분석")
+
 st.header("Test Header1")
 st.header("Test Header2")
 
@@ -45,6 +46,8 @@ League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 
 League_Object['firstbaron_win'] = League.drop(League[(League['firstbaron'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
 League_Object
+
+option = st.selectbox('분석할 팀을 선택하세요.', League_Object.index)
 
 FirstObj_Win = pd.DataFrame({'type':['firstdragon', 'firstherald', 'firstbaron'],
                               'win_rate':[np.average(League_Object['firstdragon_win']), np.average(League_Object['firstherald_win']), np.average(League_Object['firstbaron_win'])]})
