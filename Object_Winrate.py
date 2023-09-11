@@ -65,7 +65,6 @@ def dataProcessing(year_select="2023") :
     League_Object['ocean_win'] = League.drop(League[(League['ocean_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['chemtech_win'] = League.drop(League[(League['chemtech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['hextech_win'] = League.drop(League[(League['hextech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
-    League_Object.drop(League_Object[(League_Object['count'] < 20)].index, inplace=True)
 dataProcessing()
 
 # streamlit 레이아웃 조정
@@ -189,7 +188,8 @@ def main() :
             else :
                 st.write(f"- 드래곤의 영혼을 얻었을 경우의 승률이 평균보다 낮습니다. 따라서 드래곤의 영혼을 얻는 것은 불리합니다.")
 
-if League_Object.loc[select_team]['count'] == None :
+if League_Object.loc[select_team]['count'] < 20 :
     st.error("매치 수가 20회 미만입니다.")
 else :
+    League_Object.drop(League_Object[(League_Object['count'] < 20)].index, inplace=True)
     main()
