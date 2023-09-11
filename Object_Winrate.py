@@ -50,6 +50,12 @@ def dataProcessing(year_select="2023") :
     League_Object['heralds'] = League.groupby('teamname').agg({'heralds' : 'mean'})
     League_Object['barons'] = League.groupby('teamname').agg({'barons' : 'mean'})
     League_Object['dragon_buff'] = League.groupby('teamname').agg({'dragon_buff' : 'mean'})
+    League_Object['infernal_count'] = League.groupby('teamname').agg({'infernal_buff' : 'count'})
+    League_Object['mountain_count'] = League.groupby('teamname').agg({'mountain_buff' : 'count'})
+    League_Object['cloud_count'] = League.groupby('teamname').agg({'cloud_buff' : 'count'})
+    League_Object['ocean_count'] = League.groupby('teamname').agg({'ocean_buff' : 'count'})
+    League_Object['chemtech_count'] = League.groupby('teamname').agg({'chemtech_buff' : 'count'})
+    League_Object['hextech_count'] = League.groupby('teamname').agg({'hextech_buff' : 'count'})
 
     League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
@@ -138,9 +144,9 @@ def main() :
         st.markdown('''- 첫 드래곤과 승률, 첫 전령과 승률 사이의 관계를 보면 모두 양의 상관관계가 있는 것으로 보여집니다.  
                     붉은색 회귀선이 가리키는 바와 같이, 첫 오브젝트를 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.''')
         if lr_dragon_model.coef_[0] > lr_herald_model.coef_[0] :
-            st.write(f"- 첫 드래곤의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 크다. 이를 통해 첫 드래곤을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있다.")
+            st.write(f"- 첫 드래곤의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 큽니다. 이를 통해 첫 드래곤을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있습니다.")
         else :
-            st.write(f"- 첫 드래곤의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 작다. 이를 통해 첫 전령을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있다.")
+            st.write(f"- 첫 드래곤의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 작습니다. 이를 통해 첫 전령을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있습니다.")
 
     with con4 :
         # 선택한 년도의 드래곤 버프 획득과 승률 그래프 그리기
@@ -157,13 +163,17 @@ def main() :
         if int(select_year) < 2020 :
             st.error("드래곤 영혼 출시 이전입니다.")
         else :
-            st.header(f"{select_team}팀의 첫 오브젝트와 승률 분석")
-            FirstObj_Win = pd.DataFrame({'object':['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech', 'infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech'],
+            st.header(f"{select_team}팀의 드래곤 영혼과 승률 분석")
+            buff_eng = ['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech']
+            buff_object = [buff_eng[i] for i in len(buff_eng) if League_Object.loc[select_team][buff_eng[i]+'_count']]
+            print(buff_object)
+            
+            Buff_Win = pd.DataFrame({'object':['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech', 'infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech'],
                                         'type':['average', 'average', 'average', 'average', 'average', 'average', select_team, select_team, select_team, select_team, select_team, select_team],
                                         'win_rate':[League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], 
                                                     League_Object.loc[select_team]['infernal_win'], League_Object.loc[select_team]['mountain_win'], League_Object.loc[select_team]['cloud_win'], League_Object.loc[select_team]['ocean_win'], League_Object.loc[select_team]['chemtech_win'], League_Object.loc[select_team]['hextech_win']]})
             fig = plt.figure(figsize=(10, 4.7))
-            sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
+            sb.barplot(x='object', y='win_rate', data=Buff_Win, hue='type')
             st.pyplot(fig)
             win_rate_list = [League_Object.loc[select_team]['infernal_win'], League_Object.loc[select_team]['mountain_win'], League_Object.loc[select_team]['cloud_win'], League_Object.loc[select_team]['ocean_win'], League_Object.loc[select_team]['chemtech_win'], League_Object.loc[select_team]['hextech_win']]
             buff = ['화염', '대지', '바람', '바다', '화학공학', '마법공학']
