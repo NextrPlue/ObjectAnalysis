@@ -173,5 +173,6 @@ def main() :
                     max_buff.append(buff[i])
             if (max(win_rate_list) >= League_Object.loc[select_team]['result']) :
                 st.write(f"- {', '.join(max_buff)}의 영혼을 얻었을 경우, 평균보다 약 {(max(win_rate_list) - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 {', '.join(max_buff)}의 영혼을 얻는 것이 유리합니다.")
-
+            else :
+                st.write(f"- 드래곤의 영혼을 얻었을 경우의 승률이 평균보다 낮습니다. 따라서 드래곤의 영혼을 얻는 것은 불리합니다.")
 main()
