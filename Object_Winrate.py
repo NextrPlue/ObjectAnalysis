@@ -42,6 +42,7 @@ empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
 
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
+select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'])
 league_list = np.append(["모든 리그"], League['league'].unique())
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 dataProcessing(select_league)
