@@ -166,13 +166,10 @@ def main() :
             st.header(f"{select_team}팀의 드래곤 영혼과 승률 분석")
             buff_eng = ['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech']
             buff_object = [buff_eng[i] for i in range (len(buff_eng)) if League_Object.loc[select_team][(buff_eng[i]+'_count')] != 0]
-            st.write(buff_object)
-            st.write(League_Object.loc[select_team])
             
-            Buff_Win = pd.DataFrame({'object':['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech', 'infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech'],
-                                        'type':['average', 'average', 'average', 'average', 'average', 'average', select_team, select_team, select_team, select_team, select_team, select_team],
-                                        'win_rate':[League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], League_Object.loc[select_team]['result'], 
-                                                    League_Object.loc[select_team]['infernal_win'], League_Object.loc[select_team]['mountain_win'], League_Object.loc[select_team]['cloud_win'], League_Object.loc[select_team]['ocean_win'], League_Object.loc[select_team]['chemtech_win'], League_Object.loc[select_team]['hextech_win']]})
+            Buff_Win = pd.DataFrame({'object':buff_object,
+                                        'type':[select_team for i in range (len(buff_object))],
+                                        'win_rate':[League_Object.loc[select_team][(i+'_win')] for i in buff_object]})
             fig = plt.figure(figsize=(10, 4.7))
             sb.barplot(x='object', y='win_rate', data=Buff_Win, hue='type')
             st.pyplot(fig)
