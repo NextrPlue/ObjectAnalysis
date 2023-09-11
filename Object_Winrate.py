@@ -84,7 +84,6 @@ def main() :
                                                 League_Object.loc[select_team]['firstdragon_win'], League_Object.loc[select_team]['firstherald_win']]})
         fig = plt.figure(figsize=(10, 4.7))
         sb.barplot(x='object', y='win_rate', data=FirstObj_Win, hue='type')
-        plt.title(f"{select_team}의 첫 오브젝트와 승률")
         st.pyplot(fig)
 
         # 그래프 분석
@@ -108,7 +107,6 @@ def main() :
         st.header(f"{select_year}년도의 첫 오브젝트와 승률 분석")
         fig = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["firstdragon", "firstherald"], height=4)
         fig.map(sb.regplot, line_kws={'color' : 'red'})
-        plt.title(f"{select_year}년도의 첫 오브젝트와 승률 선형 관계")
         st.pyplot(fig)
 
         # 회귀 계수와 적합도 분석
@@ -135,9 +133,7 @@ def main() :
 
     with con4 :
         # 선택한 년도의 용 버프 획득과 승률 그래프 그리기
-        fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
-        plt.title(f"{select_year}년도의 용 버프 획득과 승률 선형 관계")
+        fig = sb.regplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
         st.pyplot(fig)
-
 
 main()
