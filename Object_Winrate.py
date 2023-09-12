@@ -78,7 +78,12 @@ def main() :
     if select_team is None :
         st.error("‼️분석할 팀이 없습니다‼️")
         return
-
+    if League_Object.loc[select_team]['count'] < min_match :
+        st.error(f"매치 수가 {min_match}회 미만입니다.")
+        return
+    
+    League_Object.drop(League_Object[(League_Object['count'] < min_match)].index, inplace=True)
+    
     with con2 :
         # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
         st.header(f"{select_team}팀의 첫 오브젝트와 승률 분석")
@@ -183,9 +188,4 @@ def main() :
             st.markdown('''- 드래곤 영혼과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다.  
                         붉은색 회귀선이 가리키는 바와 같이, 드래곤 영혼을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.''')
 
-## 조건을 만족하면 분석 시작
-if League_Object.loc[select_team]['count'] < min_match :
-    st.error(f"매치 수가 {min_match}회 미만입니다.")
-else :
-    League_Object.drop(League_Object[(League_Object['count'] < min_match)].index, inplace=True)
-    main()
+main()
