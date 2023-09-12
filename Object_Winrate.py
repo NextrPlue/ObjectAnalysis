@@ -158,10 +158,17 @@ def main() :
         st.write('- 붉은색 회귀선이 가리키는 바와 같이, 오브젝트를 더 많이 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.')
         
     with con5 :
-        # 선택한 년도의 전령을 활용한 첫 타워와 승률 그래프 그리기
+        # 선택한 년도의 첫 전령과 첫 타워, 첫 타워와 승률 그래프 그리기
         st.header(f"{select_year}년도의 첫 전령과 첫 타워, 첫 타워와 승률 분석")
-        fig = sb.lmplot(x='heralds', y='firsttower_win', data=League_Object, height=4, line_kws={'color' : 'red'})
-        st.pyplot(fig)
+        con51, con52 = st.columns([0.5, 0.5])
+        with con51 :
+            st.write(f"### 첫 전령과 첫 타워")
+            fig = sb.lmplot(x='firstherald', y='firsttower', data=League_Object, height=4, line_kws={'color' : 'red'})
+            st.pyplot(fig)
+        with con52 :
+            st.write(f"### 첫 타워와 승률")
+            fig = sb.lmplot(x='firsttower', y='firsttower_win', data=League_Object, height=4, line_kws={'color' : 'red'})
+            st.pyplot(fig)
         # 그래프 분석
         st.write('- 첫 전령 처치와 첫 타워 파괴, 첫 타워 파괴와 승률 사이의 관계를 보면 모두 양의 상관관계가 있는 것으로 보여집니다.')
         st.write('- 두 그래프를 통해 첫 전령을 더 많이 처치할 경우 첫 타워를 더 많이 파괴하는 경향이 있습니다. 또한, 첫 타워를 파괴한 팀은 승률이 높은 경향을 보입니다.')
