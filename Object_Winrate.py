@@ -147,7 +147,7 @@ def main() :
         st.pyplot(fig)
 
         # 회귀 계수와 적합도 분석
-        Xds = League_Object[['dragons']]
+        Xds = League_Object[['dragons']].dropna()
         yds = League_Object['result']
         lr_dragons_model = LinearRegression()
         lr_dragons_model.fit(Xds, yds)
