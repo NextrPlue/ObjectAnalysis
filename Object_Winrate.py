@@ -211,7 +211,17 @@ def main() :
             st.header(f"{select_year}년도의 드래곤 영혼 획득과 승률 분석")
             fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
             st.pyplot(fig)
+
+            # 회귀 계수와 적합도 분석
+            Xdb = League_Object[['dragon_buff']]
+            ydb = League_Object['result']
+            lr_dragonbuff_model = LinearRegression()
+            lr_dragonbuff_model.fit(Xdb, ydb)
+            st.write(f"그래프의 회귀 계수 : {lr_dragonbuff_model.coef_[0]:.3f}, 결정 계수 : {lr_dragonbuff_model.score(Xdb, ydb):.3f}")
+
+            # 그래프 분석
             st.write('- 드래곤 영혼과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다.')
             st.write('- 붉은색 회귀선이 가리키는 바와 같이, 드래곤 영혼을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.')
+
 
 main()
