@@ -83,6 +83,7 @@ def main() :
         return
     
     League_Object.drop(League_Object[(League_Object['count'] < min_match)].index, inplace=True)
+    st.sidebar.dataframe(League_Object.lo[select_team])
     
     with con2 :
         # 선택한 팀의 첫 오브젝트와 승률 관계 막대 그래프 그리기
