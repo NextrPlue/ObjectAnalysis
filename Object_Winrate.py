@@ -63,7 +63,7 @@ with con1 :
 
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
-select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2018', '2019', '2020', '2021', '2022', '2023'])
+select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'])
 dataProcessing(select_year)
 league_list = np.append(["모든 리그"], sorted(League['league'].unique()))
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
@@ -141,7 +141,7 @@ def main() :
             st.write(f"- 첫 드래곤의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 작습니다. 이를 통해 첫 전령을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있습니다.")
 
     with con4 :
-        # 선택한 년도의 오브젝트 처치 수와 승률 그래프 그리기
+        # 선택한 년도의 드래곤 처치 수와 승률 그래프 그리기
         st.header(f"{select_year}년도의 오브젝트 처치 수와 승률 분석")
         fig = sb.lmplot(x='dragons', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
         st.pyplot(fig)
