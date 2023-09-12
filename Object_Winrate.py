@@ -68,7 +68,7 @@ select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['201
 dataProcessing(select_year)
 league_list = np.append(["모든 리그"], sorted(League['league'].unique()))
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
-team_list = pd.DataFrame()
+team_list = League[['teamname', 'league']]
 if select_league == "모든 리그" :
     team_list = League
 else : 
