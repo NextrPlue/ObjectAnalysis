@@ -164,7 +164,7 @@ def main() :
         # 그래프 분석
         st.markdown('''- 드래곤 처치 수와 승률, 전령 처치 수와 승률 사이의 관계를 보면 모두 양의 상관관계가 있는 것으로 보여집니다.  
                     붉은색 회귀선이 가리키는 바와 같이, 오브젝트를 더 많이 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.''')
-        if lr_dragons_model.coef_[0] > lr_herald_model.coef_[0] :
+        if lr_dragons_model.coef_[0] > lr_heralds_model.coef_[0] :
             st.write(f"- 드래곤 처치 수의 회귀 계수는 {lr_dragons_model.coef_[0]:.3f}로 전령 처치 수의 회귀 계수 {lr_heralds_model.coef_[0]:.3f}보다 큽니다. 이를 통해 드래곤을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있습니다.")
         else :
             st.write(f"- 드래곤 처치 수의 회귀 계수는 {lr_dragons_model.coef_[0]:.3f}로 전령 처치 수의 회귀 계수 {lr_heralds_model.coef_[0]:.3f}보다 작습니다. 이를 통해 전령을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있습니다.")
