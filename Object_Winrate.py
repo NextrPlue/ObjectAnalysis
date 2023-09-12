@@ -176,6 +176,15 @@ def main() :
         st.write('- 붉은색 회귀선이 가리키는 바와 같이, 전령 버프를 이용하여 첫 타워를 파괴하는 팀이 높은 승률을 보이는 경향이 있습니다.')
 
     with con6 :
+        # 선택한 팀의 전령 버프를 이용한 첫 타워와 승률 그래프 그리기
+        st.header(f"{select_team}팀의 전령 버프를 이용한 첫 타워와 승률 분석")
+        fig = plt.figure(figsize=(10, 4.7))
+        ax = fig.add_subplot()
+        sb.barplot(x='herald_firsttower_win', y='result', data=League_Object, label=select_team)
+        ax.axhline(League_Object.loc[select_team]['result'], color='red', linestyle='solid', label='mean')
+        ax.legend()
+        st.pyplot(fig)
+
         # 선택한 팀의 드래곤 버프 획득과 승률 그래프 그리기
         if int(select_year) < 2020 :
             st.error("드래곤 영혼 출시 이전입니다.")
