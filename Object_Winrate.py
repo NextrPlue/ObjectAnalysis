@@ -41,6 +41,7 @@ def dataProcessing(year_select="2023") :
     League_Object['ocean_count'] = League.groupby('teamname').agg({'ocean_buff' : 'sum'})
     League_Object['chemtech_count'] = League.groupby('teamname').agg({'chemtech_buff' : 'sum'})
     League_Object['hextech_count'] = League.groupby('teamname').agg({'hextech_buff' : 'sum'})
+    League_Object['herald_firsttower'] = League.groupby('teamname').agg({'herald_firsttower':'mean'})
 
     League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
@@ -160,7 +161,7 @@ def main() :
     with con5 :
         # 선택한 년도의 첫 전령과 첫 타워, 첫 타워와 승률 그래프 그리기
         st.header(f"{select_year}년도의 첫 전령과 첫 타워, 첫 타워와 승률 분석")
-        fig = sb.lmplot(x='heralds', y='herald_firsttower_win', data=League_Object, height=4, line_kws={'color' : 'red'})
+        fig = sb.lmplot(x='herald_firsttower', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
         st.pyplot(fig)
 
         # 그래프 분석
