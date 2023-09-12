@@ -63,7 +63,7 @@ with con1 :
 
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
-select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'])
+select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2018', '2019', '2020', '2021', '2022', '2023'])
 dataProcessing(select_year)
 league_list = np.append(["모든 리그"], sorted(League['league'].unique()))
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
@@ -160,6 +160,12 @@ def main() :
     with con5 :
         # 선택한 팀의 첫 전령과 첫 타워, 첫 타워와 승률 그래프 그리기
         st.header(f"{select_team}팀의 첫 전령과 첫 타워, 첫 타워와 승률 분석")
+        con51, con52 = st.columns([0.5, 0.5])
+        with con51 :
+            st.header(f"test")
+        with con52 :
+            st.header(f"test2")
+        st.header("test")
 
     with con6 :
         # 선택한 팀의 드래곤 버프 획득과 승률 그래프 그리기
