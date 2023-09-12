@@ -34,7 +34,7 @@ def dataProcessing(year_select="2023") :
 
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
-    League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'infernals', 'mountains', 'clouds', 'oceans', 'chemtechs', 'hextechs', 'dragons', 'heralds', 'barons']]
+    League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'infernals', 'mountains', 'clouds', 'oceans', 'chemtechs', 'hextechs', 'dragons', 'heralds', 'barons', 'firsttower']]
     League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
     League['infernal_buff'] = ((League['infernals'] >= 2.0) & League['dragon_buff']) * 1
     League['mountain_buff'] = ((League['mountains'] >= 2.0) & League['dragon_buff']) * 1
@@ -42,7 +42,7 @@ def dataProcessing(year_select="2023") :
     League['ocean_buff'] = ((League['oceans'] >= 2.0) & League['dragon_buff']) * 1
     League['chemtech_buff'] = ((League['chemtechs'] >= 2.0) & League['dragon_buff']) * 1
     League['hextech_buff'] = ((League['hextechs'] >= 2.0) & League['dragon_buff']) * 1
-    League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('result')
+    League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('teamname')
     League_Object['count'] = League.groupby('teamname').agg({'result':'count'})
     League_Object['firstdragon'] = League.groupby('teamname').agg({'firstdragon':'mean'})
     League_Object['firstherald'] = League.groupby('teamname').agg({'firstherald':'mean'})
@@ -56,6 +56,7 @@ def dataProcessing(year_select="2023") :
     League_Object['ocean_count'] = League.groupby('teamname').agg({'ocean_buff' : 'sum'})
     League_Object['chemtech_count'] = League.groupby('teamname').agg({'chemtech_buff' : 'sum'})
     League_Object['hextech_count'] = League.groupby('teamname').agg({'hextech_buff' : 'sum'})
+    League_Object['firsttower'] = League.groupby('teamname').agg({'firsttower' : 'mean'})
 
     League_Object['firstdragon_win'] = League.drop(League[(League['firstdragon'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['firstherald_win'] = League.drop(League[(League['firstherald'] == 0)].index).groupby('teamname').agg({'result':'mean'})
@@ -65,6 +66,7 @@ def dataProcessing(year_select="2023") :
     League_Object['ocean_win'] = League.drop(League[(League['ocean_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['chemtech_win'] = League.drop(League[(League['chemtech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['hextech_win'] = League.drop(League[(League['hextech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+    League_Object['firsttower_win'] = League.drop(League[(League['firsttower'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 dataProcessing()
 
 # streamlit 레이아웃 조정
@@ -72,6 +74,7 @@ st.set_page_config(layout="wide")
 empty1, con1, empty2 = st.columns([0.2, 1.0, 0.2])
 empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
 empty5, con4, con5, empty6 = st.columns([0.2, 0.5, 0.5, 0.2])
+empty7, con6, con7, empty8 = st.columns([0.2, 0.5, 0.5, 0.2])
 with con1 :
     st.title("📈오브젝트와 승률의 상관관계 분석")
 
@@ -151,17 +154,14 @@ def main() :
             st.write(f"- 첫 드래곤의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 작습니다. 이를 통해 첫 전령을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있습니다.")
 
     with con4 :
-        # 선택한 년도의 드래곤 버프 획득과 승률 그래프 그리기
-        if int(select_year) < 2020 :
-            st.error("드래곤 영혼 출시 이전입니다.")
-        else :
-            st.header(f"{select_year}년도의 드래곤 영혼 획득과 승률 분석")
-            fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
-            st.pyplot(fig)
-            st.markdown('''- 드래곤 영혼과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다.  
-                        붉은색 회귀선이 가리키는 바와 같이, 드래곤 영혼을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.''')
-    
+        # 선택한 년도의 오브젝트 처치 수와 승률 그래프 그리기
+        st.header(f"{select_year}년도의 오브젝트 처치 수와 승률 분석")
+
     with con5 :
+        # 선택한 팀의 첫 전령과 첫 타워, 첫 타워와 승률 그래프 그리기
+        st.header(f"")
+
+    with con6 :
         # 선택한 팀의 드래곤 버프 획득과 승률 그래프 그리기
         if int(select_year) < 2020 :
             st.error("드래곤 영혼 출시 이전입니다.")
@@ -185,10 +185,22 @@ def main() :
                 if win_rate_list[i] == max(win_rate_list) :
                     max_buff.append(buff[i])
             if (max(win_rate_list) >= League_Object.loc[select_team]['result']) :
-                st.write(f"- {', '.join(max_buff)}의 영혼을 얻었을 경우, 평균보다 약 {(max(win_rate_list) - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 {', '.join(max_buff)}의 영혼을 얻는 것이 유리합니다.")
+                st.write(f"- {', '.join(max_buff)}의 영혼을 얻었을 경우, 평균보다 약 {(max(win_rate_list) - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여주며 가장 높은 승률을 기록하였습니다. 따라서 {', '.join(max_buff)}의 영혼을 얻는 것이 유리합니다.")
             else :
                 st.write(f"- 드래곤의 영혼을 얻었을 경우의 승률이 평균보다 낮습니다. 따라서 드래곤의 영혼을 얻는 것은 불리합니다.")
 
+    with con7 :
+        # 선택한 년도의 드래곤 버프 획득과 승률 그래프 그리기
+        if int(select_year) < 2020 :
+            st.error("드래곤 영혼 출시 이전입니다.")
+        else :
+            st.header(f"{select_year}년도의 드래곤 영혼 획득과 승률 분석")
+            fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
+            st.pyplot(fig)
+            st.markdown('''- 드래곤 영혼과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다.  
+                        붉은색 회귀선이 가리키는 바와 같이, 드래곤 영혼을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.''')
+
+## 조건을 만족하면 분석 시작
 if League_Object.loc[select_team]['count'] < min_match :
     st.error(f"매치 수가 {min_match}회 미만입니다.")
 else :
