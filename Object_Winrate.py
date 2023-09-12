@@ -145,9 +145,13 @@ def main() :
     with con4 :
         # 선택한 년도의 오브젝트 처치 수와 승률 그래프 그리기
         st.header(f"{select_year}년도의 오브젝트 처치 수와 승률 분석")
-        fig = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["dragons", "heralds", "barons", "elders"], height=8)
+        fig = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["dragons", "heralds"], height=4)
+        fig.map(sb.regplot, line_kws={'color' : 'red'})
+        st.pyplot(fig)      
+        fig = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["barons", "elders"], height=4)
         fig.map(sb.regplot, line_kws={'color' : 'red'})
         st.pyplot(fig)        
+        
         
     with con5 :
         # 선택한 팀의 첫 전령과 첫 타워, 첫 타워와 승률 그래프 그리기
