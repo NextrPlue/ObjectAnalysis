@@ -195,10 +195,10 @@ def main() :
                      따라서 전령 버프를 이용하여 첫 타워를 부수는 것은 불리합니다.")
 
         # 선택한 팀의 드래곤 버프 획득과 승률 그래프 그리기
+        st.header(f"{select_team}팀의 드래곤 영혼과 승률 분석")
         if int(select_year) < 2020 :
             st.error("드래곤 영혼 출시 이전입니다.")
         else :
-            st.header(f"{select_team}팀의 드래곤 영혼과 승률 분석")
             buff_eng = ['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech']
             buff_object = [buff_eng[i] for i in range (len(buff_eng)) if League_Object.loc[select_team][(buff_eng[i]+'_count')] != 0]
             
@@ -231,10 +231,10 @@ def main() :
 
     with con7 :
         # 선택한 년도의 드래곤 버프 획득과 승률 그래프 그리기
+        st.header(f"{select_year}년도의 드래곤 영혼 획득과 승률 분석")
         if int(select_year) < 2020 :
             st.error("드래곤 영혼 출시 이전입니다.")
         else :
-            st.header(f"{select_year}년도의 드래곤 영혼 획득과 승률 분석")
             fig = sb.lmplot(x='dragon_buff', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
             st.pyplot(fig)
 
