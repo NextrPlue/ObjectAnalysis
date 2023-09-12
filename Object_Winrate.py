@@ -201,11 +201,11 @@ def main() :
             buff_eng = ['infernal', 'mountain', 'cloud', 'ocean', 'chemtech', 'hextech']
             buff_object = [buff_eng[i] for i in range (len(buff_eng)) if League_Object.loc[select_team][(buff_eng[i]+'_count')] != 0]
             
-            Buff_Win = pd.DataFrame({'object':buff_object,
+            Buff_Win = pd.DataFrame({'type':buff_object,
                                         'win_rate':[League_Object.loc[select_team][(i+'_win')] for i in buff_object]})
             fig = plt.figure(figsize=(10, 4.7))
             ax = fig.add_subplot()
-            sb.barplot(x='object', y='win_rate', data=Buff_Win, label=select_team)
+            sb.barplot(x='type', y='win_rate', data=Buff_Win, label=select_team)
             ax.axhline(League_Object.loc[select_team]['result'], color='red', linestyle='solid', label='mean')
             ax.legend()
             st.pyplot(fig)
