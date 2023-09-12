@@ -69,10 +69,8 @@ dataProcessing(select_year)
 league_list = np.append(["모든 리그"], sorted(League['league'].unique()))
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 team_list = League[['teamname', 'league']]
-if select_league == "모든 리그" :
-    team_list = League
-else : 
-    team_list = League[League['league'] == select_league]
+if select_league != "모든 리그" :
+    team_list = team_list[team_list['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list['teamname'].unique())
 min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 0, 50, 20, 5)
 
