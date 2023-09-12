@@ -162,10 +162,9 @@ def main() :
         st.header(f"{select_team}팀의 첫 전령과 첫 타워, 첫 타워와 승률 분석")
         con51, con52 = st.columns([0.5, 0.5])
         with con51 :
-            st.markdown("### test")
-        with con52 :
-            st.markdown("## test")
+            st.markdown("### ")
         st.header("test")
+        st.write("### test")
 
     with con6 :
         # 선택한 팀의 드래곤 버프 획득과 승률 그래프 그리기
