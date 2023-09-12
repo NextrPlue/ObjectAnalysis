@@ -53,6 +53,10 @@ def dataProcessing(year_select="2023") :
     League_Object['hextech_win'] = League.drop(League[(League['hextech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['herald_firsttower_win'] = League.drop(League[(League['herald_firsttower'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
+for i in ['2018', '2019', '2020', '2021', '2022', '2023'] :
+    dataProcessing(i)
+    League_Object.to_csv(f"{i}.csv")
+
 # streamlit 레이아웃 조정
 st.set_page_config(layout="wide")
 empty1, con1, empty2 = st.columns([0.2, 1.0, 0.2])
@@ -248,6 +252,5 @@ def main() :
             # 그래프 분석
             st.write('- 드래곤 영혼과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다.')
             st.write('- 붉은색 회귀선이 가리키는 바와 같이, 드래곤 영혼을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.')
-
 
 main()
