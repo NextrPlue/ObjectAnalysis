@@ -159,7 +159,7 @@ def main() :
         
     with con5 :
         # 선택한 년도의 첫 전령과 첫 타워, 첫 타워와 승률 그래프 그리기
-        st.header(f"{select_team}팀의 첫 전령과 첫 타워, 첫 타워와 승률 분석")
+        st.header(f"{select_year}년도의 첫 전령과 첫 타워, 첫 타워와 승률 분석")
         con51, con52 = st.columns([0.5, 0.5])
         with con51 :
             st.write(f"### 첫 전령과 첫 타워")
