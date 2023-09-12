@@ -50,7 +50,7 @@ def dataProcessing(year_select="2023") :
     League_Object['ocean_win'] = League.drop(League[(League['ocean_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['chemtech_win'] = League.drop(League[(League['chemtech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['hextech_win'] = League.drop(League[(League['hextech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
-    League_Object['firsttower_win'] = League.drop(League[(League['firsttower'] == 0)].index).drop(League[(League['heralds'] == 0)].index).groupby('teamname').agg({'result':'mean'})
+    League_Object['firsttower_win'] = League.drop(League[(League['firsttower'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
 # streamlit 레이아웃 조정
 st.set_page_config(layout="wide")
