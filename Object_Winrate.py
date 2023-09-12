@@ -165,7 +165,7 @@ def main() :
         st.pyplot(fig)
 
         # 회귀 계수와 적합도 분석
-        Xht = League_Object[['dragons']]
+        Xht = League_Object[['herald_firsttower']]
         yht = League_Object['result']
         lr_heraldt_model = LinearRegression()
         lr_heraldt_model.fit(Xht, yht)
