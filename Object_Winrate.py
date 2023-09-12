@@ -71,7 +71,7 @@ select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', lea
 team_list = League[['teamname', 'league']]
 if select_league != "모든 리그" :
     team_list = team_list[team_list['league'] == select_league]
-select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(team_list['teamname'].unique()))
+select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(team_list['teamname'].unique().astype(str)))
 min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 0, 50, 20, 5)
 
 def main() :
@@ -139,10 +139,10 @@ def main() :
     with con4 :
         # 선택한 년도의 오브젝트 처치 수와 승률 그래프 그리기
         st.header(f"{select_year}년도의 오브젝트 처치 수와 승률 분석")
-
+        
     with con5 :
         # 선택한 팀의 첫 전령과 첫 타워, 첫 타워와 승률 그래프 그리기
-        st.header(f"")
+        st.header(f"{select_team}팀의 첫 전령과 첫 타워, 첫 타워와 승률 분석")
 
     with con6 :
         # 선택한 팀의 드래곤 버프 획득과 승률 그래프 그리기
