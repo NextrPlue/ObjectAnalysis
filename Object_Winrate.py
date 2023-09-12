@@ -71,7 +71,7 @@ team_list = League[['teamname', 'league']]
 if select_league != "모든 리그" :
     team_list = team_list[team_list['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(team_list['teamname'].unique().astype(str)))
-min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 0, 50, 20, 5)
+min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 10, 50, 20, 5)
 
 def main() :
     if select_team is None :
@@ -147,7 +147,7 @@ def main() :
         st.pyplot(fig)
 
         # 회귀 계수와 적합도 분석
-        Xds = League_Object[['dragons']].dropna()
+        Xds = League_Object[['dragons']]
         yds = League_Object['result']
         lr_dragons_model = LinearRegression()
         lr_dragons_model.fit(Xds, yds)
