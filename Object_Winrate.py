@@ -178,9 +178,11 @@ def main() :
     with con6 :
         # 선택한 팀의 전령 버프를 이용한 첫 타워와 승률 그래프 그리기
         st.header(f"{select_team}팀의 전령 버프를 이용한 첫 타워와 승률 분석")
+        Firsttower_Win = pd.DataFrame({'object':['herald_firsttower'],
+                            'win_rate':[League_Object.loc[select_team]['herald_firsttower_win']]})
         fig = plt.figure(figsize=(10, 4.7))
         ax = fig.add_subplot()
-        sb.barplot(x='herald_firsttower_win', y='result', data=League_Object, label=select_team)
+        sb.barplot(x='object', y='win_rate', data=Firsttower_Win, label=select_team)
         ax.axhline(League_Object.loc[select_team]['result'], color='red', linestyle='solid', label='mean')
         ax.legend()
         st.pyplot(fig)
