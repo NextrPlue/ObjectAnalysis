@@ -53,10 +53,6 @@ def dataProcessing(year_select="2023") :
     League_Object['hextech_win'] = League.drop(League[(League['hextech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['herald_firsttower_win'] = League.drop(League[(League['herald_firsttower'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
-for i in ['2018', '2019', '2020', '2021', '2022', '2023'] :
-    dataProcessing(i)
-    League_Object.to_csv(f"{i}.csv")
-
 # streamlit 레이아웃 조정
 st.set_page_config(layout="wide")
 empty1, con1, empty2 = st.columns([0.2, 1.0, 0.2])
