@@ -158,13 +158,17 @@ def main() :
         st.write('- 붉은색 회귀선이 가리키는 바와 같이, 오브젝트를 더 많이 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.')
         
     with con5 :
-        # 선택한 팀의 첫 전령과 첫 타워, 첫 타워와 승률 그래프 그리기
+        # 선택한 년도의 첫 전령과 첫 타워, 첫 타워와 승률 그래프 그리기
         st.header(f"{select_team}팀의 첫 전령과 첫 타워, 첫 타워와 승률 분석")
         con51, con52 = st.columns([0.5, 0.5])
         with con51 :
-            st.markdown("### ")
-        st.header("test")
-        st.write("### test")
+            st.write(f"### 첫 전령과 첫 타워")
+            fig = sb.lmplot(x='firstherald', y='firsttower', data=League_Object, height=4, line_kws={'color' : 'red'})
+            st.pyplot(fig)
+        with con52 :
+            st.write(f"### 첫 타워와 승률")
+            fig = sb.lmplot(x='firsttower', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
+            st.pyplot(fig)
 
     with con6 :
         # 선택한 팀의 드래곤 버프 획득과 승률 그래프 그리기
