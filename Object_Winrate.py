@@ -143,7 +143,7 @@ def main() :
 
     with con4 :
         # 선택한 년도의 드래곤 처치 수와 승률 그래프 그리기
-        st.header(f"{select_year}년도의 오브젝트 처치 수와 승률 분석")
+        st.header(f"{select_year}년도의 드래곤 처치 수와 승률 분석")
         fig = sb.lmplot(x='dragons', y='result', data=League_Object, height=4, line_kws={'color' : 'red'})
         st.pyplot(fig)
 
@@ -152,11 +152,11 @@ def main() :
         yds = League_Object['result']
         lr_dragons_model = LinearRegression()
         lr_dragons_model.fit(Xds, yds)
-        st.write(f"첫 드래곤의 회귀 계수 : {lr_dragons_model.coef_[0]:.3f}, 결정 계수 : {lr_dragons_model.score(Xds, yds):.3f}")
+        st.write(f"드래곤 처치 수의 회귀 계수 : {lr_dragons_model.coef_[0]:.3f}, 결정 계수 : {lr_dragons_model.score(Xds, yds):.3f}")
 
         # 그래프 분석
-        st.write('- 드래곤 처치 수와 승률, 전령 처치 수와 승률 사이의 관계를 보면 모두 양의 상관관계가 있는 것으로 보여집니다.')
-        st.write('- 붉은색 회귀선이 가리키는 바와 같이, 오브젝트를 더 많이 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.')
+        st.write('- 드래곤 처치 수와 승률 사이의 관계를 보면 모두 양의 상관관계가 있는 것으로 보여집니다.')
+        st.write('- 붉은색 회귀선이 가리키는 바와 같이, 드래곤을 더 많이 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.')
         
     with con5 :
         # 선택한 년도의 첫 전령과 첫 타워, 첫 타워와 승률 그래프 그리기
@@ -165,9 +165,8 @@ def main() :
         st.pyplot(fig)
 
         # 그래프 분석
-        st.write('- 첫 전령 처치와 첫 타워 파괴, 첫 타워 파괴와 승률 사이의 관계를 보면 모두 양의 상관관계가 있는 것으로 보여집니다.')
-        st.write('- 두 그래프를 통해 첫 전령을 더 많이 처치할 경우 첫 타워를 더 많이 파괴하는 경향이 있습니다. 또한, 첫 타워를 파괴한 팀은 승률이 높은 경향을 보입니다.')
-        st.write('- 붉은색 회귀선이 가리키는 바와 같이, 오브젝트를 더 많이 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.')
+        st.write('- 전령 버프를 이용한 첫 타워 파괴와 승률 사이의 관계를 보면 모두 양의 상관관계가 있는 것으로 보여집니다.')
+        st.write('- 붉은색 회귀선이 가리키는 바와 같이, 전령 버프를 이용하여 첫 타워를 파괴하는 팀이 높은 승률을 보이는 경향이 있습니다.')
 
     with con6 :
         # 선택한 팀의 드래곤 버프 획득과 승률 그래프 그리기
