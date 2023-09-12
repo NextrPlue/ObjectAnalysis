@@ -15,22 +15,7 @@ League_Object = pd.DataFrame()
 # 데이터 가공
 def dataProcessing(year_select="2023") :
     global League, League_Object
-    if year_select == "2016" :
-        League = pd.read_csv('2016_LoL_esports_match_data_from_OraclesElixir.csv')
-    elif year_select == "2017" :
-        League = pd.read_csv('2017_LoL_esports_match_data_from_OraclesElixir.csv')
-    elif year_select == "2018" :
-        League = pd.read_csv('2018_LoL_esports_match_data_from_OraclesElixir.csv')
-    elif year_select == "2019" :
-        League = pd.read_csv('2019_LoL_esports_match_data_from_OraclesElixir.csv')
-    elif year_select == "2020" :
-        League = pd.read_csv('2020_LoL_esports_match_data_from_OraclesElixir.csv')
-    elif year_select == "2021" :
-        League = pd.read_csv('2021_LoL_esports_match_data_from_OraclesElixir.csv')
-    elif year_select == "2022" :
-        League = pd.read_csv('2022_LoL_esports_match_data_from_OraclesElixir.csv')
-    else :
-        League = pd.read_csv('2023_LoL_esports_match_data_from_OraclesElixir.csv')
+    League = pd.read_csv(f"{year_select}_LoL_esports_match_data_from_OraclesElixir.csv")
 
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
@@ -82,13 +67,14 @@ with con1 :
 st.sidebar.title('🎮데이터 선택하기')
 select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'])
 dataProcessing(select_year)
-league_list = np.append(["모든 리그"], League['league'].unique())
+league_list = np.append(["모든 리그"], sorted(League['league'].unique()))
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 if select_league == "모든 리그" :
-    team_list = League
+    team_list = League['teamname'].unique()
 else : 
     team_list = League[League['league'] == select_league]
-select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(team_list['teamname'].unique()))
+    team_list = team_list['teamname'].unique()
+select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(team_list))
 min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 0, 50, 20, 5)
 
 def main() :
