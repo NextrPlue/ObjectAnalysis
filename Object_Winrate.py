@@ -178,13 +178,20 @@ def main() :
     with con6 :
         # 선택한 팀의 전령 버프를 이용한 첫 타워와 승률 그래프 그리기
         st.header(f"{select_team}팀의 전령 버프를 이용한 첫 타워와 승률 분석")
-        Firsttower_Win = pd.DataFrame({'object':['herald_firsttower', 'average'],
+        Firsttower_Win = pd.DataFrame({'result':['herald_firsttower', 'average'],
                             'win_rate':[League_Object.loc[select_team]['herald_firsttower_win'], League_Object.loc[select_team]['result']]})
         fig = plt.figure(figsize=(10, 4.7))
         ax = fig.add_subplot()
-        sb.barplot(x='object', y='win_rate', data=Firsttower_Win)
-        ax.legend()
+        sb.barplot(x='result', y='win_rate', data=Firsttower_Win)
         st.pyplot(fig)
+
+        # 그래프 분석
+        if League_Object.loc[select_team]['herald_firsttower_win'] > League_Object[select_team]['result'] :
+            st.write(f"- {select_team}팀은 전령 버프를 이용하여 첫 타워를 부쉈을 경우, 평균보다 약 {(League_Object.loc[select_team]['herald_firsttower_win'] - League_Object[select_team]['result'])*100:.2f} 높은 승률을 보여줍니다.\
+                     따라서 전령 버프를 이용하여 첫 타워를 부수는 것이 유리합니다.")
+        else :
+            st.write(f"- {select_team}팀은 전령 버프를 이용하여 첫 타워를 부쉈을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object[select_team]['herald_firsttower_win'])*100:.2f} 낮은 승률을 보여줍니다.\
+                     따라서 전령 버프를 이용하여 첫 타워를 부수는 것은 불리합니다.")
 
         # 선택한 팀의 드래곤 버프 획득과 승률 그래프 그리기
         if int(select_year) < 2020 :
@@ -202,6 +209,8 @@ def main() :
             ax.axhline(League_Object.loc[select_team]['result'], color='red', linestyle='solid', label='mean')
             ax.legend()
             st.pyplot(fig)
+            
+            # 그래프 분석
             win_rate_list = [League_Object.loc[select_team]['infernal_win'], League_Object.loc[select_team]['mountain_win'], League_Object.loc[select_team]['cloud_win'], League_Object.loc[select_team]['ocean_win'], League_Object.loc[select_team]['chemtech_win'], League_Object.loc[select_team]['hextech_win']]
             buff = ['화염', '대지', '바람', '바다', '화학공학', '마법공학']
             max_buff = []
