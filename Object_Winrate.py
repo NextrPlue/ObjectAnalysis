@@ -42,7 +42,7 @@ def dataProcessing(year_select="2023") :
     League['ocean_buff'] = ((League['oceans'] >= 2.0) & League['dragon_buff']) * 1
     League['chemtech_buff'] = ((League['chemtechs'] >= 2.0) & League['dragon_buff']) * 1
     League['hextech_buff'] = ((League['hextechs'] >= 2.0) & League['dragon_buff']) * 1
-    League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('teamname')
+    League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('result')
     League_Object['count'] = League.groupby('teamname').agg({'result':'count'})
     League_Object['firstdragon'] = League.groupby('teamname').agg({'firstdragon':'mean'})
     League_Object['firstherald'] = League.groupby('teamname').agg({'firstherald':'mean'})
@@ -85,9 +85,9 @@ dataProcessing(select_year)
 league_list = np.append(["모든 리그"], League['league'].unique())
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 if select_league == "모든 리그" :
-    team_list = League
+    team_list = League.sort_index()
 else : 
-    team_list = League[League['league'] == select_league]
+    team_list = League[League['league'] == select_league].sort_index()
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', team_list['teamname'].unique())
 min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 0, 50, 20, 5)
 
