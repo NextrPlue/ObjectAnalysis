@@ -186,11 +186,11 @@ def main() :
         st.pyplot(fig)
 
         # 그래프 분석
-        if League_Object.loc[select_team]['herald_firsttower_win'] > League_Object[select_team]['result'] :
-            st.write(f"- {select_team}팀은 전령 버프를 이용하여 첫 타워를 부쉈을 경우, 평균보다 약 {(League_Object.loc[select_team]['herald_firsttower_win'] - League_Object[select_team]['result'])*100:.2f} 높은 승률을 보여줍니다.\
+        if League_Object.loc[select_team]['herald_firsttower_win'] > League_Object.loc[select_team]['result'] :
+            st.write(f"- {select_team}팀은 전령 버프를 이용하여 첫 타워를 부쉈을 경우, 평균보다 약 {(League_Object.loc[select_team]['herald_firsttower_win'] - League_Object.loc[select_team]['result'])*100:.2f} 높은 승률을 보여줍니다.\
                      따라서 전령 버프를 이용하여 첫 타워를 부수는 것이 유리합니다.")
         else :
-            st.write(f"- {select_team}팀은 전령 버프를 이용하여 첫 타워를 부쉈을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object[select_team]['herald_firsttower_win'])*100:.2f} 낮은 승률을 보여줍니다.\
+            st.write(f"- {select_team}팀은 전령 버프를 이용하여 첫 타워를 부쉈을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object.loc[select_team]['herald_firsttower_win'])*100:.2f} 낮은 승률을 보여줍니다.\
                      따라서 전령 버프를 이용하여 첫 타워를 부수는 것은 불리합니다.")
 
         # 선택한 팀의 드래곤 버프 획득과 승률 그래프 그리기
