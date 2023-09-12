@@ -19,7 +19,7 @@ def dataProcessing(year_select="2023") :
 
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
-    League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'infernals', 'mountains', 'clouds', 'oceans', 'chemtechs', 'hextechs', 'dragons', 'heralds', 'barons', 'elders', 'firsttower']]
+    League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'infernals', 'mountains', 'clouds', 'oceans', 'chemtechs', 'hextechs', 'dragons', 'heralds', 'firsttower']]
     League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
     League['infernal_buff'] = ((League['infernals'] >= 2.0) & League['dragon_buff']) * 1
     League['mountain_buff'] = ((League['mountains'] >= 2.0) & League['dragon_buff']) * 1
@@ -33,8 +33,6 @@ def dataProcessing(year_select="2023") :
     League_Object['firstherald'] = League.groupby('teamname').agg({'firstherald':'mean'})
     League_Object['dragons'] = League.groupby('teamname').agg({'dragons' : 'mean'})
     League_Object['heralds'] = League.groupby('teamname').agg({'heralds' : 'mean'})
-    League_Object['barons'] = League.groupby('teamname').agg({'barons' : 'mean'})
-    League_Object['elders'] = League.groupby('teamname').agg({'elders' : 'mean'})
     League_Object['dragon_buff'] = League.groupby('teamname').agg({'dragon_buff' : 'mean'})
     League_Object['infernal_count'] = League.groupby('teamname').agg({'infernal_buff' : 'sum'})
     League_Object['mountain_count'] = League.groupby('teamname').agg({'mountain_buff' : 'sum'})
@@ -147,10 +145,7 @@ def main() :
         st.header(f"{select_year}년도의 오브젝트 처치 수와 승률 분석")
         fig = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["dragons", "heralds"], height=4)
         fig.map(sb.regplot, line_kws={'color' : 'red'})
-        st.pyplot(fig)      
-        fig = sb.PairGrid(League_Object, y_vars=["result"], x_vars=["barons", "elders"], height=4)
-        fig.map(sb.regplot, line_kws={'color' : 'red'})
-        st.pyplot(fig)        
+        st.pyplot(fig)
         
         
     with con5 :
