@@ -100,12 +100,12 @@ def main() :
 
         # 그래프 분석
         if League_Object.loc[select_team]['result'] < League_Object.loc[select_team]['firstdragon_win'] :
-            st.write(f"- {select_team}팀은 첫 드래곤을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['firstdragon_win'] - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 드래곤을 먹는것이 유리합니다.")    
+            st.write(f"- {select_team}팀은 첫 드래곤을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['firstdragon_win'] - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 드래곤을 먹는것은 유리합니다.")    
         else :
             st.write(f"- {select_team}팀은 첫 드래곤을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object.loc[select_team]['firstdragon_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 드래곤을 먹는것은 불리합니다.")
 
         if League_Object.loc[select_team]['result'] < League_Object.loc[select_team]['firstherald_win'] :
-            st.write(f"- {select_team}팀은 첫 전령을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['firstherald_win'] - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 전령을 먹는것이 유리합니다.")    
+            st.write(f"- {select_team}팀은 첫 전령을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['firstherald_win'] - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여줍니다. 따라서 첫 전령을 먹는것은 유리합니다.")    
         else :
             st.write(f"- {select_team}팀은 첫 전령을 먹었을 경우, 평균보다 약 {(League_Object.loc[select_team]['result'] - League_Object.loc[select_team]['firstherald_win'])*100:.2f}% 낮은 승률을 보여줍니다. 따라서 첫 전령을 먹는것은 불리합니다.")
         if (League_Object.loc[select_team]['firstdragon_win'] < League_Object.loc[select_team]['result']) & \
@@ -227,9 +227,9 @@ def main() :
                 if win_rate_list[i] < League_Object.loc[select_team]['result'] :
                     low_buff.append(buff[i])
             if (max(win_rate_list) >= League_Object.loc[select_team]['result']) :
-                st.write(f"- {', '.join(max_buff)}의 영혼을 얻었을 경우, 평균보다 약 {(max(win_rate_list) - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여주며 가장 높은 승률을 기록하였습니다. 따라서 {', '.join(max_buff)}의 영혼을 얻는 것이 유리합니다.")
+                st.write(f"- {', '.join(max_buff)}의 영혼을 얻었을 경우, 평균보다 약 {(max(win_rate_list) - League_Object.loc[select_team]['result'])*100:.2f}% 높은 승률을 보여주며 가장 높은 승률을 기록하였습니다. 따라서 {', '.join(max_buff)}의 영혼을 얻는 것이 상대적으로 유리합니다.")
                 if (min(win_rate_list) < League_Object.loc[select_team]['result']) :
-                    st.write(f"- {', '.join(low_buff)}의 영혼을 얻었을 경우 평균보다 낮은 승률을 보여줍니다. 따라서 {', '.join(low_buff)}의 영혼은 피하는 것이 유리합니다.")
+                    st.write(f"- {', '.join(low_buff)}의 영혼을 얻었을 경우 평균보다 낮은 승률을 보여줍니다. 따라서 {', '.join(low_buff)}의 영혼은 피하는 것이 상대적으로 유리합니다.")
             else :
                 st.write(f"- 드래곤의 영혼을 얻었을 경우의 승률이 평균보다 낮습니다. 따라서 드래곤의 영혼을 얻는 것은 불리합니다.")
 
