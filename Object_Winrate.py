@@ -3,12 +3,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sb
-import openai
 import warnings
 
 from sklearn.linear_model import LinearRegression
-
-openai.api_key = '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'
 
 warnings.filterwarnings(action='ignore')
 
@@ -66,7 +63,7 @@ empty7, con6, con7, empty8 = st.columns([0.2, 0.5, 0.5, 0.2])
 with con1 :
     st.title("📈오브젝트와 승률의 상관관계 분석")
 
-# streamlit 사이드바
+#streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
 select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2018', '2019', '2020', '2021', '2022', '2023'])
 dataProcessing(select_year)
@@ -77,22 +74,6 @@ if select_league != "모든 리그" :
     team_list = team_list[team_list['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(team_list['teamname'].unique().astype(str)))
 min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 10, 50, 20, 5)
-
-# chatgpt 데이터 분석
-chat_response = ""
-
-def analysisChatGPT(content) :
-    global chat_response
-    messages = []
-    messages.append({"role":"user", "content":content})
-
-    completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages
-    )
-
-    chat_response = completion.choices[0].message.content
-
 
 def main() :
     if select_team is None :
@@ -161,10 +142,6 @@ def main() :
             st.write(f"- 첫 드래곤의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 큽니다. 이를 통해 첫 드래곤을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있습니다.")
         else :
             st.write(f"- 첫 드래곤의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 작습니다. 이를 통해 첫 전령을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있습니다.")
-        analysisChatGPT(f"{League_Object}에서 firstdragon과 result의 관계를 분석해줘. 코드 작성하지 말고 분석 결과만 말해줘")
-        st.write(f"- ChatGPT : {chat_response}")
-        analysisChatGPT(f"{League_Object}에서 firstherald와 result의 관계를 분석해줘. 코드 작성하지 말고 분석 결과만 말해줘")
-        st.write(f"- ChatGPT : {chat_response}")
 
     with con4 :
         # 선택한 년도의 드래곤 처치 수와 승률 그래프 그리기
