@@ -70,6 +70,7 @@ select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['201
 dataProcessing(select_year)
 select_patch = st.sidebar.selectbox('분석할 패치를 선택하세요.', League['patch'].unique())
 League = League[League['patch'] == select_patch]
+cont()
 league_list = np.append(["모든 리그"], sorted(League['league'].unique()))
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 team_list = League[['teamname', 'league']]
