@@ -163,6 +163,8 @@ def main() :
             st.write(f"- 첫 드래곤의 회귀 계수는 {lr_dragon_model.coef_[0]:.3f}로 첫 전령의 회귀 계수 {lr_herald_model.coef_[0]:.3f}보다 작습니다. 이를 통해 첫 전령을 획득하는 것이 승률에 더 큰 영향을 미친다는 것을 알 수 있습니다.")
         analysisChatGPT(f"{League_Object}에서 firstdragon과 result의 관계를 분석해줘. 코드 작성하지 말고 분석 결과만 말해줘")
         st.write(f"- ChatGPT : {chat_response}")
+        analysisChatGPT(f"{League_Object}에서 firstherald와 result의 관계를 분석해줘. 코드 작성하지 말고 분석 결과만 말해줘")
+        st.write(f"- ChatGPT : {chat_response}")
 
     with con4 :
         # 선택한 년도의 드래곤 처치 수와 승률 그래프 그리기
