@@ -19,7 +19,7 @@ def dataProcessing(year_select="2023") :
 
     League = League[League['datacompleteness'] == 'complete']
     League = League[League['position'] == 'team']
-    League = League[['teamname', 'league', 'result', 'firstdragon', 'firstherald', 'infernals', 'mountains', 'clouds', 'oceans', 'chemtechs', 'hextechs', 'dragons', 'heralds', 'firsttower']]
+    League = League[['teamname', 'league', 'patch', 'result', 'firstdragon', 'firstherald', 'infernals', 'mountains', 'clouds', 'oceans', 'chemtechs', 'hextechs', 'dragons', 'heralds', 'firsttower']]
     League['dragon_buff'] = (League['dragons'] >= 4.0) * 1
     League['infernal_buff'] = ((League['infernals'] >= 2.0) & League['dragon_buff']) * 1
     League['mountain_buff'] = ((League['mountains'] >= 2.0) & League['dragon_buff']) * 1
@@ -28,6 +28,8 @@ def dataProcessing(year_select="2023") :
     League['chemtech_buff'] = ((League['chemtechs'] >= 2.0) & League['dragon_buff']) * 1
     League['hextech_buff'] = ((League['hextechs'] >= 2.0) & League['dragon_buff']) * 1
     League['herald_firsttower'] = ((League['heralds'] > 0) & League['firsttower']) * 1
+
+def cont() :
     League_Object = League.groupby('teamname').agg({'result':'mean'}).sort_values('result')
     League_Object['count'] = League.groupby('teamname').agg({'result':'count'})
     League_Object['firstdragon'] = League.groupby('teamname').agg({'firstdragon':'mean'})
@@ -66,6 +68,8 @@ with con1 :
 st.sidebar.title('🎮데이터 선택하기')
 select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2018', '2019', '2020', '2021', '2022', '2023'])
 dataProcessing(select_year)
+select_patch = st.sidebar.selectbox('분석할 패치를 선택하세요.', League['patch'].unique())
+League = League[League['patch'] == select_year]
 league_list = np.append(["모든 리그"], sorted(League['league'].unique()))
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
 team_list = League[['teamname', 'league']]
