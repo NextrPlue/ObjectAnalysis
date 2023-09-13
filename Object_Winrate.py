@@ -56,10 +56,10 @@ def dataProcessing(year_select="2023") :
 
 # streamlit 레이아웃 조정
 st.set_page_config(layout="wide")
-empty1, con1, empty2 = st.columns([0.2, 1.0, 0.2])
-empty3, con2, con3, empty4 = st.columns([0.2, 0.5, 0.5, 0.2])
-empty5, con4, con5, empty6 = st.columns([0.2, 0.5, 0.5, 0.2])
-empty7, con6, con7, empty8 = st.columns([0.2, 0.5, 0.5, 0.2])
+empty1, con1, empty2 = st.columns([0.1, 1.0, 0.1])
+empty3, con2, con3, empty4 = st.columns([0.1, 0.5, 0.5, 0.1])
+empty5, con4, con5, empty6 = st.columns([0.1, 0.5, 0.5, 0.1])
+empty7, con6, con7, empty8 = st.columns([0.1, 0.5, 0.5, 0.1])
 with con1 :
     st.title("📈오브젝트와 승률의 상관관계 분석")
 
