@@ -3,9 +3,12 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sb
+import openai
 import warnings
 
 from sklearn.linear_model import LinearRegression
+
+openai.api_key = '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'
 
 warnings.filterwarnings(action='ignore')
 
