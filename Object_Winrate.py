@@ -333,13 +333,10 @@ def main() :
     with con8 :
         st.header(f"오브젝트를 통한 {select_team}팀의 승부 예측")
         select_team2 = st.selectbox('대결할 팀을 선택하세요.', sorted(League_Predict['teamname'].unique().astype(str)))
-        if League_Object.loc[select_team2]['count'] < min_match :
-            st.error(f"매치 수가 {min_match}회 미만입니다.")
-        else :
-            team1_result, team2_result, accuracy = predictWinner(select_team, select_team2)
-            col1, col2, col3 = st.columns(3)
-            col1.metric(select_team, team1_result[0], team1_result[0] - team2_result[0])
-            col2.metric(select_team2, team2_result[0], team2_result[0] - team1_result[0])
-            col3.metric("Accuracy", accuracy)
+        team1_result, team2_result, accuracy = predictWinner(select_team, select_team2)
+        col1, col2, col3 = st.columns(3)
+        col1.metric(select_team, team1_result[0], team1_result[0] - team2_result[0])
+        col2.metric(select_team2, team2_result[0], team2_result[0] - team1_result[0])
+        col3.metric("Accuracy", accuracy)
 
 main()
