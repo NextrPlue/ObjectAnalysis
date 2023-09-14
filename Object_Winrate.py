@@ -136,7 +136,7 @@ if select_league != "모든 리그" :
     team_list = team_list[team_list['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(team_list['teamname'].unique().astype(str)))
 min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 10, 50, 20, 5)
-select_team2 = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(League_Predict['teamname'].unique()))
+select_team2 = st.sidebar.selectbox('분석할 팀2을 선택하세요.', sorted(League_Predict['teamname'].unique()))
 team1_result, team2_result = predictWinner(select_team, select_team2)
 st.sidebar.write(f"{team1_result} vs {team2_result}")
 
