@@ -14,7 +14,7 @@ League_Object = pd.DataFrame()
 
 # 데이터 가공
 def dataProcessing(year_select="2023") :
-    global League, League_Object, League_Predict, gradient_boosting_model
+    global League, League_Object
     League = pd.read_csv(f"{year_select}_LoL_esports_match_data_from_OraclesElixir.csv")
 
     League = League[League['datacompleteness'] == 'complete']
