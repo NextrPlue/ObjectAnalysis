@@ -82,7 +82,7 @@ def dataProcessing(year_select="2023") :
         mean_value = League_Predict[column].mean()
         League_Predict[column].fillna(mean_value, inplace=True)
 
-    loaded_model = joblib.load(f'{year_select}_model.joblib')
+    loaded_model = joblib.load(f'2023_model.joblib')
 
 # 승부 예측 함수
 def predictWinner(team1, team2) :
