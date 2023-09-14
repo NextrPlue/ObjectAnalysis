@@ -42,7 +42,7 @@ y_pred = gradient_boosting_model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 
 print(accuracy)
-
+'''
 # Filter the data to include only the matches involving the specified teams
 team1_data = data[data['teamname'] == 'Liiv SANDBOX']
 team2_data = data[data['teamname'] == 'T1']
@@ -69,12 +69,12 @@ normalized_team1_win_prob = (team1_win_prob / total_prob) * 100
 normalized_team2_win_prob = (team2_win_prob / total_prob) * 100
 
 print(normalized_team1_win_prob)
-print(normalized_team2_win_prob)
+print(normalized_team2_win_prob)'''
 
-'''
+
 # 모델 저장하기
-joblib.dump(gradient_boosting_model, 'gradient_boosting_model.joblib')
-
+joblib.dump(gradient_boosting_model, '2023_model.joblib')
+'''
 # 모델 불러오기
 loaded_model = joblib.load('gradient_boosting_model.joblib')
 '''
