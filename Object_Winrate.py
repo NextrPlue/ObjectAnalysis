@@ -332,6 +332,9 @@ def main() :
     
     with con8 :
         st.header(f"오브젝트를 통한 {select_team}팀의 승부 예측")
+        team_list = League_Predict[['teamname', 'league']]
+        if select_league != "모든 리그" :
+            team_list = team_list[team_list['league'] == select_league]
         select_team2 = st.selectbox('대결할 팀을 선택하세요.', sorted(League_Predict['teamname'].unique().astype(str)))
         team1_result, team2_result, accuracy = predictWinner(select_team, select_team2)
         col1, col2, col3 = st.columns(3)
