@@ -152,7 +152,7 @@ select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(t
 min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 10, 50, 20, 5)
 select_team2 = st.sidebar.selectbox('분석할 팀2을 선택하세요.', sorted(League_Predict['teamname'].unique().astype(str)))
 team1_result, team2_result, accuracy = predictWinner(select_team, select_team2)
-col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.sidebar.columns(3)
 col1.metric(select_team, team1_result[0], team1_result[0] - team2_result[0])
 col2.metric(select_team2, team2_result[0], team2_result[0] - team1_result[0])
 col3.metric("Accuracy", accuracy)
