@@ -84,38 +84,28 @@ def dataProcessing(year_select="2023") :
 
 # 승부 예측 함수
 def predictWinner(team1, team2) :
-    # Split the League_Predict into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(League_Predict[features], League_Predict[target], test_size=0.2, random_state=42)
 
-    # Initialize the Random Forest Classifier
     gradient_boosting_model = GradientBoostingClassifier(n_estimators=100, random_state=42)
 
-    # Train the model
     gradient_boosting_model.fit(X_train, y_train)
 
-    # Predict the outcomes for the test set
     y_pred = gradient_boosting_model.predict(X_test)
 
-    # Calculate the accuracy of the model
     accuracy = accuracy_score(y_test, y_pred)
 
-    # Filter the data to include only the matches involving the specified teams
     team1_data = League[League['teamname'] == team1]
     team2_data = League[League['teamname'] == team2]
 
-    # Calculate the mean statistics for each team
     team1_mean_stats = team1_data[features].mean()
     team2_mean_stats = team2_data[features].mean()
 
-    # Reshape the data to match the model's input shape
     team1_mean_stats = team1_mean_stats.values.reshape(1, -1)
     team2_mean_stats = team2_mean_stats.values.reshape(1, -1)
 
-    # Use the best model to predict the win probability for each team
     team1_win_prob = gradient_boosting_model.predict_proba(team1_mean_stats)[:, 1]
     team2_win_prob = gradient_boosting_model.predict_proba(team2_mean_stats)[:, 1]
 
-    # Calculate the normalized win probabilities for each team
     total_prob = team1_win_prob + team2_win_prob
     normalized_team1_win_prob = (team1_win_prob / total_prob) * 100
     normalized_team2_win_prob = (team2_win_prob / total_prob) * 100
@@ -123,9 +113,6 @@ def predictWinner(team1, team2) :
     total_prob = team1_win_prob + team2_win_prob
     normalized_team1_win_prob = (team1_win_prob / total_prob) * 100
     normalized_team2_win_prob = (team2_win_prob / total_prob) * 100
-
-    print(normalized_team1_win_prob)
-    print(normalized_team2_win_prob)
 
     return normalized_team1_win_prob, normalized_team2_win_prob, accuracy
 
@@ -335,7 +322,7 @@ def main() :
         team_list = League_Predict[['teamname', 'league']]
         if select_league != "모든 리그" :
             team_list = team_list[team_list['league'] == select_league]
-        select_team2 = st.selectbox('대결할 팀을 선택하세요.', sorted(League_Predict['teamname'].unique().astype(str)))
+        select_team2 = st.selectbox('대결할 팀을 선택하세요.', sorted(team_list['teamname'].unique().astype(str)))
         team1_result, team2_result, accuracy = predictWinner(select_team, select_team2)
         col1, col2, col3 = st.columns(3)
         col1.metric(select_team, team1_result[0], team1_result[0] - team2_result[0])
