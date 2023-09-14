@@ -331,7 +331,7 @@ def main() :
             st.write('- 붉은색 회귀선이 가리키는 바와 같이, 드래곤 영혼을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.')
     
     with con8 :
-        st.header(f"{select_team}팀의 승부 예측")
+        st.header(f"오브젝트를 통한 {select_team}팀의 승부 예측")
         select_team2 = st.selectbox('대결할 팀을 선택하세요.', sorted(League_Predict['teamname'].unique().astype(str)))
         team1_result, team2_result, accuracy = predictWinner(select_team, select_team2)
         col1, col2, col3 = st.columns(3)
