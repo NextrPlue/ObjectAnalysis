@@ -4,17 +4,31 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sb
 import warnings
+import joblib
 
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LinearRegression
 
 warnings.filterwarnings(action='ignore')
 
 League = pd.DataFrame()
 League_Object = pd.DataFrame()
+League_Predict = pd.DataFrame()
+loaded_model = ""
+
+features = [
+    'firstdragon', 'firstherald', 'infernals', 'mountains', 'clouds', 'oceans', 
+    'chemtechs', 'hextechs', 'dragons', 'heralds', 'firsttower', 'dragon_buff', 
+    'infernal_buff', 'mountain_buff', 'cloud_buff', 'ocean_buff', 'chemtech_buff', 
+    'hextech_buff', 'herald_firsttower'
+]
+target = 'result'
 
 # 데이터 가공
 def dataProcessing(year_select="2023") :
-    global League, League_Object
+    global League, League_Object, League_Predict, loaded_model
     League = pd.read_csv(f"{year_select}_LoL_esports_match_data_from_OraclesElixir.csv")
 
     League = League[League['datacompleteness'] == 'complete']
@@ -54,6 +68,54 @@ def dataProcessing(year_select="2023") :
     League_Object['hextech_win'] = League.drop(League[(League['hextech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['herald_firsttower_win'] = League.drop(League[(League['herald_firsttower'] == 0)].index).groupby('teamname').agg({'result':'mean'})
 
+    League_Predict = League
+    League_Predict['chemtechs'].fillna(0, inplace=True)
+    League_Predict['hextechs'].fillna(0, inplace=True)
+    League_Predict['infernals'].fillna(0, inplace=True)
+    League_Predict['mountains'].fillna(0, inplace=True)
+    League_Predict['clouds'].fillna(0, inplace=True)
+    League_Predict['oceans'].fillna(0, inplace=True)
+    League_Predict['dragons'].fillna(0, inplace=True)
+
+    columns_to_fill_mean = ['firstdragon', 'heralds', 'firsttower', 'firstherald']
+    for column in columns_to_fill_mean:
+        mean_value = League_Predict[column].mean()
+        League_Predict[column].fillna(mean_value, inplace=True)
+
+    loaded_model = joblib.load(f'{year_select}_model.joblib')
+
+# 승부 예측 함수
+def predictWinner(team1, team2) :
+    # Filter the data to include only the matches involving the specified teams
+    team1_data = League[League['teamname'] == team1]
+    team2_data = League[League['teamname'] == team2]
+
+    # Calculate the mean statistics for each team
+    team1_mean_stats = team1_data[features].mean()
+    team2_mean_stats = team2_data[features].mean()
+
+    # Reshape the data to match the model's input shape
+    team1_mean_stats = team1_mean_stats.values.reshape(1, -1)
+    team2_mean_stats = team2_mean_stats.values.reshape(1, -1)
+
+    # Use the best model to predict the win probability for each team
+    team1_win_prob = loaded_model.predict_proba(team1_mean_stats)[:, 1]
+    team2_win_prob = loaded_model.predict_proba(team2_mean_stats)[:, 1]
+
+    # Calculate the normalized win probabilities for each team
+    total_prob = team1_win_prob + team2_win_prob
+    normalized_team1_win_prob = (team1_win_prob / total_prob) * 100
+    normalized_team2_win_prob = (team2_win_prob / total_prob) * 100
+
+    total_prob = team1_win_prob + team2_win_prob
+    normalized_team1_win_prob = (team1_win_prob / total_prob) * 100
+    normalized_team2_win_prob = (team2_win_prob / total_prob) * 100
+
+    print(normalized_team1_win_prob)
+    print(normalized_team2_win_prob)
+
+    return normalized_team1_win_prob, normalized_team2_win_prob
+
 # streamlit 레이아웃 조정
 st.set_page_config(layout="wide")
 empty1, con1, empty2 = st.columns([0.1, 1.0, 0.1])
@@ -74,6 +136,9 @@ if select_league != "모든 리그" :
     team_list = team_list[team_list['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(team_list['teamname'].unique().astype(str)))
 min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 10, 50, 20, 5)
+select_team2 = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(League_Predict['teamname'].unique()))
+team1_result, team2_result = predictWinner(select_team, select_team2)
+st.sidebar.write(f"{team1_result} vs {team2_result}")
 
 def main() :
     if select_team is None :

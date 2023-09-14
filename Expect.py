@@ -6,7 +6,20 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score
 
 # Load the uploaded CSV file
-data = pd.read_csv("2023.csv")
+data = pd.read_csv("2018.csv")
+
+data['chemtechs'].fillna(0, inplace=True)
+data['hextechs'].fillna(0, inplace=True)
+data['infernals'].fillna(0, inplace=True)
+data['mountains'].fillna(0, inplace=True)
+data['clouds'].fillna(0, inplace=True)
+data['oceans'].fillna(0, inplace=True)
+data['dragons'].fillna(0, inplace=True)
+
+columns_to_fill_mean = ['firstdragon', 'heralds', 'firsttower', 'firstherald']
+for column in columns_to_fill_mean:
+    mean_value = data[column].mean()
+    data[column].fillna(mean_value, inplace=True)
 
 # Check for missing values in the dataset
 missing_values_count = data.isnull().sum()
@@ -14,9 +27,7 @@ missing_values_count = data.isnull().sum()
 # Display columns with missing values, if any
 missing_values_count[missing_values_count > 0]
 
-'''
 print(missing_values_count)
-'''
 
 features = [
     'firstdragon', 'firstherald', 'infernals', 'mountains', 'clouds', 'oceans', 
@@ -69,11 +80,11 @@ normalized_team1_win_prob = (team1_win_prob / total_prob) * 100
 normalized_team2_win_prob = (team2_win_prob / total_prob) * 100
 
 print(normalized_team1_win_prob)
-print(normalized_team2_win_prob)'''
+print(normalized_team2_win_prob)
 
-
+'''
 # 모델 저장하기
-joblib.dump(gradient_boosting_model, '2023_model.joblib')
+joblib.dump(gradient_boosting_model, '2018_model.joblib')
 '''
 # 모델 불러오기
 loaded_model = joblib.load('gradient_boosting_model.joblib')
