@@ -82,6 +82,8 @@ def dataProcessing(year_select="2023") :
         mean_value = League_Predict[column].mean()
         League_Predict[column].fillna(mean_value, inplace=True)
 
+# 승부 예측 함수
+def predictWinner(team1, team2) :
     # Split the League_Predict into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(League_Predict[features], League_Predict[target], test_size=0.2, random_state=42)
 
@@ -97,10 +99,6 @@ def dataProcessing(year_select="2023") :
     # Calculate the accuracy of the model
     accuracy = accuracy_score(y_test, y_pred)
 
-    print(accuracy)
-
-# 승부 예측 함수
-def predictWinner(team1, team2) :
     # Filter the data to include only the matches involving the specified teams
     team1_data = League[League['teamname'] == team1]
     team2_data = League[League['teamname'] == team2]
@@ -129,7 +127,7 @@ def predictWinner(team1, team2) :
     print(normalized_team1_win_prob)
     print(normalized_team2_win_prob)
 
-    return normalized_team1_win_prob, normalized_team2_win_prob
+    return normalized_team1_win_prob, normalized_team2_win_prob, accuracy
 
 # streamlit 레이아웃 조정
 st.set_page_config(layout="wide")
@@ -153,8 +151,11 @@ if select_league != "모든 리그" :
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(team_list['teamname'].unique().astype(str)))
 min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 10, 50, 20, 5)
 select_team2 = st.sidebar.selectbox('분석할 팀2을 선택하세요.', sorted(League_Predict['teamname'].unique().astype(str)))
-team1_result, team2_result = predictWinner(select_team, select_team2)
-st.sidebar.write(f"{team1_result} vs {team2_result}")
+team1_result, team2_result, accuracy = predictWinner(select_team, select_team2)
+col1, col2, col3 = st.columns(3)
+col1.metric(select_team, team1_result, team1_result - team2_result)
+col2.metric(select_team2, team2_result, team2_result - team1_result)
+col3.metric("Accuracy", accuracy)
 
 def main() :
     if select_team is None :
