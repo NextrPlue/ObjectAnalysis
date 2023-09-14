@@ -135,6 +135,7 @@ empty1, con1, empty2 = st.columns([0.1, 1.0, 0.1])
 empty3, con2, con3, empty4 = st.columns([0.1, 0.5, 0.5, 0.1])
 empty5, con4, con5, empty6 = st.columns([0.1, 0.5, 0.5, 0.1])
 empty7, con6, con7, empty8 = st.columns([0.1, 0.5, 0.5, 0.1])
+empty9, con8, empty9 = st.columns([0.2, 1.0, 0.2])
 with con1 :
     st.title("📈오브젝트와 승률의 상관관계 분석")
 
@@ -150,12 +151,6 @@ if select_league != "모든 리그" :
     team_list = team_list[team_list['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(team_list['teamname'].unique().astype(str)))
 min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 10, 50, 20, 5)
-select_team2 = st.sidebar.selectbox('분석할 팀2을 선택하세요.', sorted(League_Predict['teamname'].unique().astype(str)))
-team1_result, team2_result, accuracy = predictWinner(select_team, select_team2)
-col1, col2, col3 = st.sidebar.columns(3)
-col1.metric(select_team, team1_result[0], team1_result[0] - team2_result[0])
-col2.metric(select_team2, team2_result[0], team2_result[0] - team1_result[0])
-col3.metric("Accuracy", accuracy)
 
 def main() :
     if select_team is None :
@@ -334,5 +329,14 @@ def main() :
             # 그래프 분석
             st.write('- 드래곤 영혼과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다.')
             st.write('- 붉은색 회귀선이 가리키는 바와 같이, 드래곤 영혼을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.')
+    
+    with con8 :
+        st.header(f"{select_team}팀의 승부 예측")
+        select_team2 = st.selectbox('대결할 팀을 선택하세요.', sorted(League_Predict['teamname'].unique().astype(str)))
+        team1_result, team2_result, accuracy = predictWinner(select_team, select_team2)
+        col1, col2, col3 = st.columns(3)
+        col1.metric(select_team, team1_result[0], team1_result[0] - team2_result[0])
+        col2.metric(select_team2, team2_result[0], team2_result[0] - team1_result[0])
+        col3.metric("Accuracy", accuracy)
 
 main()
