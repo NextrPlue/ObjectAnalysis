@@ -6,23 +6,23 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score
 
 # Load the uploaded CSV file
-data = pd.read_csv("2018.csv")
+League_Predict = pd.read_csv("2018.csv")
 
-data['chemtechs'].fillna(0, inplace=True)
-data['hextechs'].fillna(0, inplace=True)
-data['infernals'].fillna(0, inplace=True)
-data['mountains'].fillna(0, inplace=True)
-data['clouds'].fillna(0, inplace=True)
-data['oceans'].fillna(0, inplace=True)
-data['dragons'].fillna(0, inplace=True)
+League_Predict['chemtechs'].fillna(0, inplace=True)
+League_Predict['hextechs'].fillna(0, inplace=True)
+League_Predict['infernals'].fillna(0, inplace=True)
+League_Predict['mountains'].fillna(0, inplace=True)
+League_Predict['clouds'].fillna(0, inplace=True)
+League_Predict['oceans'].fillna(0, inplace=True)
+League_Predict['dragons'].fillna(0, inplace=True)
 
 columns_to_fill_mean = ['firstdragon', 'heralds', 'firsttower', 'firstherald']
 for column in columns_to_fill_mean:
-    mean_value = data[column].mean()
-    data[column].fillna(mean_value, inplace=True)
+    mean_value = League_Predict[column].mean()
+    League_Predict[column].fillna(mean_value, inplace=True)
 
-# Check for missing values in the dataset
-missing_values_count = data.isnull().sum()
+# Check for missing values in the League_Predictset
+missing_values_count = League_Predict.isnull().sum()
 
 # Display columns with missing values, if any
 missing_values_count[missing_values_count > 0]
@@ -37,8 +37,8 @@ features = [
 ]
 target = 'result'
 
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(data[features], data[target], test_size=0.2, random_state=42)
+# Split the League_Predict into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(League_Predict[features], League_Predict[target], test_size=0.2, random_state=42)
 
 # Initialize the Random Forest Classifier
 gradient_boosting_model = GradientBoostingClassifier(n_estimators=100, random_state=42)
@@ -54,15 +54,15 @@ accuracy = accuracy_score(y_test, y_pred)
 
 print(accuracy)
 '''
-# Filter the data to include only the matches involving the specified teams
-team1_data = data[data['teamname'] == 'Liiv SANDBOX']
-team2_data = data[data['teamname'] == 'T1']
+# Filter the League_Predict to include only the matches involving the specified teams
+team1_League_Predict = League_Predict[League_Predict['teamname'] == 'Liiv SANDBOX']
+team2_League_Predict = League_Predict[League_Predict['teamname'] == 'T1']
 
 # Calculate the mean statistics for each team
-team1_mean_stats = team1_data[features].mean()
-team2_mean_stats = team2_data[features].mean()
+team1_mean_stats = team1_League_Predict[features].mean()
+team2_mean_stats = team2_League_Predict[features].mean()
 
-# Reshape the data to match the model's input shape
+# Reshape the League_Predict to match the model's input shape
 team1_mean_stats = team1_mean_stats.values.reshape(1, -1)
 team2_mean_stats = team2_mean_stats.values.reshape(1, -1)
 

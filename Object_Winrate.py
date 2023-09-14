@@ -16,7 +16,7 @@ warnings.filterwarnings(action='ignore')
 League = pd.DataFrame()
 League_Object = pd.DataFrame()
 League_Predict = pd.DataFrame()
-loaded_model = ""
+gradient_boosting_model = ""
 
 features = [
     'firstdragon', 'firstherald', 'infernals', 'mountains', 'clouds', 'oceans', 
@@ -28,7 +28,7 @@ target = 'result'
 
 # 데이터 가공
 def dataProcessing(year_select="2023") :
-    global League, League_Object, League_Predict, loaded_model
+    global League, League_Object, League_Predict, gradient_boosting_model
     League = pd.read_csv(f"{year_select}_LoL_esports_match_data_from_OraclesElixir.csv")
 
     League = League[League['datacompleteness'] == 'complete']
@@ -82,7 +82,22 @@ def dataProcessing(year_select="2023") :
         mean_value = League_Predict[column].mean()
         League_Predict[column].fillna(mean_value, inplace=True)
 
-    loaded_model = joblib.load(f'{year_select}_model.joblib')
+    # Split the League_Predict into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(League_Predict[features], League_Predict[target], test_size=0.2, random_state=42)
+
+    # Initialize the Random Forest Classifier
+    gradient_boosting_model = GradientBoostingClassifier(n_estimators=100, random_state=42)
+
+    # Train the model
+    gradient_boosting_model.fit(X_train, y_train)
+
+    # Predict the outcomes for the test set
+    y_pred = gradient_boosting_model.predict(X_test)
+
+    # Calculate the accuracy of the model
+    accuracy = accuracy_score(y_test, y_pred)
+
+    print(accuracy)
 
 # 승부 예측 함수
 def predictWinner(team1, team2) :
@@ -99,8 +114,8 @@ def predictWinner(team1, team2) :
     team2_mean_stats = team2_mean_stats.values.reshape(1, -1)
 
     # Use the best model to predict the win probability for each team
-    team1_win_prob = loaded_model.predict_proba(team1_mean_stats)[:, 1]
-    team2_win_prob = loaded_model.predict_proba(team2_mean_stats)[:, 1]
+    team1_win_prob = gradient_boosting_model.predict_proba(team1_mean_stats)[:, 1]
+    team2_win_prob = gradient_boosting_model.predict_proba(team2_mean_stats)[:, 1]
 
     # Calculate the normalized win probabilities for each team
     total_prob = team1_win_prob + team2_win_prob
@@ -128,6 +143,7 @@ with con1 :
 #streamlit 사이드바
 st.sidebar.title('🎮데이터 선택하기')
 select_year = st.sidebar.selectbox('분석할 년도를 선택하세요.', ['2018', '2019', '2020', '2021', '2022', '2023'])
+select_year = "2022"
 dataProcessing(select_year)
 league_list = np.append(["모든 리그"], sorted(League['league'].unique()))
 select_league = st.sidebar.selectbox('분석할 리그를 선택하세요.', league_list)
@@ -136,7 +152,7 @@ if select_league != "모든 리그" :
     team_list = team_list[team_list['league'] == select_league]
 select_team = st.sidebar.selectbox('분석할 팀을 선택하세요.', sorted(team_list['teamname'].unique().astype(str)))
 min_match = st.sidebar.slider('필요한 최소 경기 수를 선택하세요.', 10, 50, 20, 5)
-select_team2 = st.sidebar.selectbox('분석할 팀2을 선택하세요.', sorted(League_Predict['teamname'].unique()))
+select_team2 = st.sidebar.selectbox('분석할 팀2을 선택하세요.', sorted(League_Predict['teamname'].unique().astype(str)))
 team1_result, team2_result = predictWinner(select_team, select_team2)
 st.sidebar.write(f"{team1_result} vs {team2_result}")
 
