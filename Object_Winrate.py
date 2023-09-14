@@ -4,27 +4,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sb
 import warnings
-import joblib
 
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LinearRegression
 
 warnings.filterwarnings(action='ignore')
 
 League = pd.DataFrame()
 League_Object = pd.DataFrame()
-League_Predict = pd.DataFrame()
-gradient_boosting_model = ""
-
-features = [
-    'firstdragon', 'firstherald', 'infernals', 'mountains', 'clouds', 'oceans', 
-    'chemtechs', 'hextechs', 'dragons', 'heralds', 'firsttower', 'dragon_buff', 
-    'infernal_buff', 'mountain_buff', 'cloud_buff', 'ocean_buff', 'chemtech_buff', 
-    'hextech_buff', 'herald_firsttower'
-]
-target = 'result'
 
 # 데이터 가공
 def dataProcessing(year_select="2023") :
@@ -67,54 +53,6 @@ def dataProcessing(year_select="2023") :
     League_Object['chemtech_win'] = League.drop(League[(League['chemtech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['hextech_win'] = League.drop(League[(League['hextech_buff'] == 0)].index).groupby('teamname').agg({'result':'mean'})
     League_Object['herald_firsttower_win'] = League.drop(League[(League['herald_firsttower'] == 0)].index).groupby('teamname').agg({'result':'mean'})
-
-    League_Predict = League
-    League_Predict['chemtechs'].fillna(0, inplace=True)
-    League_Predict['hextechs'].fillna(0, inplace=True)
-    League_Predict['infernals'].fillna(0, inplace=True)
-    League_Predict['mountains'].fillna(0, inplace=True)
-    League_Predict['clouds'].fillna(0, inplace=True)
-    League_Predict['oceans'].fillna(0, inplace=True)
-    League_Predict['dragons'].fillna(0, inplace=True)
-
-    columns_to_fill_mean = ['firstdragon', 'heralds', 'firsttower', 'firstherald']
-    for column in columns_to_fill_mean:
-        mean_value = League_Predict[column].mean()
-        League_Predict[column].fillna(mean_value, inplace=True)
-
-# 승부 예측 함수
-def predictWinner(team1, team2) :
-    X_train, X_test, y_train, y_test = train_test_split(League_Predict[features], League_Predict[target], test_size=0.2, random_state=42)
-
-    gradient_boosting_model = GradientBoostingClassifier(n_estimators=100, random_state=42)
-
-    gradient_boosting_model.fit(X_train, y_train)
-
-    y_pred = gradient_boosting_model.predict(X_test)
-
-    accuracy = accuracy_score(y_test, y_pred)
-
-    team1_data = League[League['teamname'] == team1]
-    team2_data = League[League['teamname'] == team2]
-
-    team1_mean_stats = team1_data[features].mean()
-    team2_mean_stats = team2_data[features].mean()
-
-    team1_mean_stats = team1_mean_stats.values.reshape(1, -1)
-    team2_mean_stats = team2_mean_stats.values.reshape(1, -1)
-
-    team1_win_prob = gradient_boosting_model.predict_proba(team1_mean_stats)[:, 1]
-    team2_win_prob = gradient_boosting_model.predict_proba(team2_mean_stats)[:, 1]
-
-    total_prob = team1_win_prob + team2_win_prob
-    normalized_team1_win_prob = (team1_win_prob / total_prob) * 100
-    normalized_team2_win_prob = (team2_win_prob / total_prob) * 100
-
-    total_prob = team1_win_prob + team2_win_prob
-    normalized_team1_win_prob = (team1_win_prob / total_prob) * 100
-    normalized_team2_win_prob = (team2_win_prob / total_prob) * 100
-
-    return normalized_team1_win_prob, normalized_team2_win_prob, accuracy
 
 # streamlit 레이아웃 조정
 st.set_page_config(layout="wide")
@@ -315,17 +253,5 @@ def main() :
             # 그래프 분석
             st.write('- 드래곤 영혼과 승률 사이의 관계를 보면 양의 상관관계가 있는 것으로 보여집니다.')
             st.write('- 붉은색 회귀선이 가리키는 바와 같이, 드래곤 영혼을 더 자주 획득하는 팀이 높은 승률을 보이는 경향이 있습니다.')
-    
-    with con8 :
-        st.header(f"오브젝트를 통한 {select_team}팀의 승부 예측")
-        team_list = League_Predict[['teamname', 'league']]
-        if select_league != "모든 리그" :
-            team_list = team_list[team_list['league'] == select_league]
-        select_team2 = st.selectbox('대결할 팀을 선택하세요.', sorted(team_list['teamname'].unique().astype(str)))
-        team1_result, team2_result, accuracy = predictWinner(select_team, select_team2)
-        col1, col2, col3 = st.columns(3)
-        col1.metric(select_team, team1_result[0], team1_result[0] - team2_result[0])
-        col2.metric(select_team2, team2_result[0], team2_result[0] - team1_result[0])
-        col3.metric("Accuracy", accuracy)
 
 main()
